@@ -1,0 +1,2 @@
+1.0.0 - 2013-XX-XX - Lew Ayotte
+	Initial Release

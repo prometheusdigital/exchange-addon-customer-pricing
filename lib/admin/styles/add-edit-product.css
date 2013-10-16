@@ -1,0 +1,11 @@
+/* CSS Document */
+
+.it-exchange-customer-pricing-content-default-checkmark {
+	color: grey;	
+	font-weight: bold;
+}
+
+.it-exchange-customer-pricing-content-default-checkmark-checked {
+	color: green;
+	font-weight: bold;	
+}
