@@ -113,7 +113,6 @@ function it_exchange_customer_pricing_before_print_metabox_base_price( $product 
 add_action( 'it_exchange_before_print_metabox_base_price', 'it_exchange_customer_pricing_before_print_metabox_base_price' );
 
 function it_exchange_customer_pricing_after_print_metabox_base_price( $product ) {
-	
 	$description = __( 'Price', 'LION' );
 	$description = apply_filters( 'it_exchange_base-price_addon_metabox_description', $description );
 	
@@ -123,9 +122,23 @@ function it_exchange_customer_pricing_after_print_metabox_base_price( $product )
 	$html  = '</div>'; //ending starting div from it_exchange_customer_pricing_before_print_metabox_base_price
 	$html .= '<div id="base-price-customer-pricing-enabled" class="' . $hide . '">';	
 	$html .= '<label for="base-price">' . esc_html( $description ) . '</label>';
-	$html .= __( 'Controlled by Customer Pricing Add-on', 'LION' );	
+	$html .= '<div>' . __( 'Customer Pricing', 'LION' ) . ' <span class="tip" title="' . __( 'To change the pricing for this product, go to Customer Pricing under the Advanced section.', 'LION' ) . '">i</span></div>';
 	$html .= '</div>';
 	
 	echo $html;
 }
 add_action( 'it_exchange_after_print_metabox_base_price', 'it_exchange_customer_pricing_after_print_metabox_base_price' );
+
+/**
+ * Adds Customer Pricing Template Path to iThemes Exchange Template paths
+ *
+ * @since 1.0.0
+ * @param array $possible_template_paths iThemes Exchange existing Template paths array
+ * @param array $template_names
+ * @return array
+*/
+function it_exchange_customer_pricing_addon_template_path( $possible_template_paths, $template_names ) {
+	$possible_template_paths[] = dirname( __FILE__ ) . '/templates/';
+	return $possible_template_paths;
+}
+add_filter( 'it_exchange_possible_template_paths', 'it_exchange_customer_pricing_addon_template_path', 10, 2 );
