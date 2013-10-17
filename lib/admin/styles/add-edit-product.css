@@ -1,11 +1,24 @@
-/* CSS Document */
+#it-exchange-product-customer-pricing input[type="text"]{width:100%;}
+#it-exchange-advanced-tabs .it-exchange-customer-pricing-option input{font-family:'Open Sans',sans-serif;font-size:13px;font-weight:bold;}
+.it-exchange-customer-pricing-option:hover .it-exchange-remove-item{border-color:#BBB;}
 
-.it-exchange-customer-pricing-content-default-checkmark {
-	color: grey;	
-	font-weight: bold;
-}
-
-.it-exchange-customer-pricing-content-default-checkmark-checked {
-	color: green;
-	font-weight: bold;	
-}
+.it-exchange-customer-pricing-enable-nyop,
+.it-exchange-customer-pricing-output-wrapper,
+.it-exchange-customer-pricing-footer,
+.it-exchange-customer-pricing-enable{margin-bottom:30px;}
+.it-exchange-customer-pricing-list-wrapper{max-width:500px;margin-bottom:15px;border:1px solid #DEDEDE;}
+.it-exchange-customer-pricing-list-titles span{display:block;padding:10px 15px;font-weight:bold;}
+.it-exchange-customer-pricing-price{width:25%;}
+.it-exchange-customer-pricing-title{width:75%;}
+.it-exchange-customer-pricing-option{border-top:1px solid #DEDEDE;}
+.it-exchange-customer-pricing-option .column-inner{padding:5px;}
+.it-exchange-customer-pricing-content-price{width:25%;}
+.it-exchange-customer-pricing-content-label{width:68%;}
+.it-exchange-customer-pricing-content-label .column-inner{position:relative;}
+.it-exchange-customer-pricing-remove-option{width:7%;}
+.it-exchange-customer-pricing-content-default{position:absolute;top:18px;right:16px;}
+.it-exchange-customer-pricing-content-default-checkmark{display:block;width:15px;height:17px;background:url('images/check-gray.png') center center no-repeat;}
+.it-exchange-customer-pricing-content-default-checkmark-checked{background-image:url('images/check-green.png');}
+.it-exchange-customer-pricing-no-prices{padding:10px;}
+.it-exchange-customer-pricing-nyop-min-max{max-width:300px;}
+.it-exchange-customer-pricing-nyop-min-max .column{width:40%;margin-right:10%;}

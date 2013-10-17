@@ -117,7 +117,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		
 		?>
         
-		<p>
+		<p class="it-exchange-customer-pricing-enable">
 		<input type="checkbox" id="it-exchange-customer-pricing-enable"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable" value="yes" <?php checked( 'yes', $enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable"><?php _e( 'Enable customer price options for this product', 'LION' ); ?> <span class="tip" title="<?php _e( 'Something goes here?.', 'LION' ); ?>">i</span></label>
 		</p>
         
@@ -134,7 +134,6 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
         	<div class="it-exchange-customer-pricing-list <?php echo $hidden_class; ?>">
                 <div class="it-exchange-customer-pricing-list-titles">
                     <div class="it-exchange-customer-pricing-item columns-wrapper">
-                        <div class="column"></div>
                         <div class="it-exchange-customer-pricing-price column">
                             <span><?php _e( 'Price', 'LION' ); ?></span>
                         </div>
@@ -180,19 +179,19 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
             </select>
         </div>
         
-		<p>
+		<p class="it-exchange-customer-pricing-enable-nyop">
 		<input type="checkbox" id="it-exchange-customer-pricing-enable-nyop"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable-nyop" value="yes" <?php checked( 'yes', $nyop_enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable-nyop"><?php _e( 'Let customers name their own price?', 'LION' ); ?> <span class="tip" title="<?php _e( 'Something goes here?.', 'LION' ); ?>">i</span></label>
 		</p>
         
-        <div class="it-exchange-customer-pricing-nyop-min-max<?php echo ( 'no' == $nyop_enabled ) ? ' hide-if-js' : '' ?>">
-            <p class="it-exchange-customer-pricing-nyop-min">
+        <div class="it-exchange-customer-pricing-nyop-min-max columns-wrapper<?php echo ( 'no' == $nyop_enabled ) ? ' hide-if-js' : '' ?>">
+            <div class="it-exchange-customer-pricing-nyop-min column">
                 <label for="it-exchange-customer-pricing-nyop-min"><?php _e( 'Minimum price', 'LION' ); ?></label>
                 <input type="text" id="it-exchange-customer-pricing-nyop-min" name="it-exchange-customer-pricing-nyop-min" value="<?php esc_attr_e( $nyop_min ); ?>" />
-            </p>
-            <p class="it-exchange-customer-pricing-nyop-max">
+			</div>
+            <div class="it-exchange-customer-pricing-nyop-max column">
                 <label for="it-exchange-customer-pricing-nyop-max"><?php _e( 'Maximum price', 'LION' ); ?></label>
                 <input type="text" id="it-exchange-customer-pricing-nyop-max" name="it-exchange-customer-pricing-nyop-max" value="<?php esc_attr_e( $nyop_max ); ?>" />
-            </p>
+			</div>
         </div>
         
         </div>
