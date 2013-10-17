@@ -8,7 +8,7 @@
 /**
  * New API functions.
 */
-//include( 'api/load.php' );
+include( 'api/load.php' );
 
 /**
  * Exchange will build your add-on's settings page for you and link to it from our add-on

@@ -101,6 +101,21 @@ function it_exchange_customer_pricing_addon_admin_wp_enqueue_styles() {
 }
 add_action( 'admin_print_styles', 'it_exchange_customer_pricing_addon_admin_wp_enqueue_styles' );
 
+/**
+ * Enqueues Customer Pricing scripts to WordPress frontend
+ *
+ * @since 1.0.0
+ *
+ * @param string $current_view WordPress passed variable
+ * @return void
+*/
+function it_exchange_customer_pricing_addon_load_public_scripts( $current_view ) {
+	// Frontend Customer Pricing Dashboard CSS & JS
+	wp_enqueue_script( 'it-exchange-customer-pricing-addon-public-js', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/js/customer-pricing.js' ), array( 'jquery' ), false, true );
+	wp_enqueue_style( 'it-exchange-customer-pricing-addon-public-css', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/styles/customer-pricing.css' ) );
+}
+add_action( 'wp_enqueue_scripts', 'it_exchange_customer_pricing_addon_load_public_scripts' );
+
 function it_exchange_customer_pricing_before_print_metabox_base_price( $product ) {
 	
 	$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
@@ -142,3 +157,31 @@ function it_exchange_customer_pricing_addon_template_path( $possible_template_pa
 	return $possible_template_paths;
 }
 add_filter( 'it_exchange_possible_template_paths', 'it_exchange_customer_pricing_addon_template_path', 10, 2 );
+
+function it_exchange_customer_pricing_store_product_product_info_loop_elements( $parts ) {
+	$product = $GLOBALS['it_exchange']['product'];
+	
+	if ( false !== $key = array_search( 'base-price', $parts ) ) {
+		if ( it_exchange_product_has_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+			if ( 'yes' === $enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+				$parts[$key] = 'customer-pricing';	
+			}
+		}
+	}
+	return $parts;
+}
+add_filter( 'it_exchange_get_store_product_product_info_loop_elements', 'it_exchange_customer_pricing_store_product_product_info_loop_elements' );
+
+function it_exchange_customer_pricing_content_product_product_info_loop_elements( $parts ) {
+	$product = $GLOBALS['it_exchange']['product'];
+	
+	if ( false !== $key = array_search( 'base-price', $parts ) ) {
+		if ( it_exchange_product_has_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+			if ( 'yes' === $enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+				$parts[$key] = 'customer-pricing';	
+			}
+		}
+	}
+	return $parts;
+}
+add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_exchange_customer_pricing_content_product_product_info_loop_elements' );

@@ -112,8 +112,8 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		$output_type = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'output_type' ) );
 		//nyop = Name Your Own Price
 		$nyop_enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_enabled' ) );
-		$nyop_min = it_exchange_format_price( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_min' ) ) );
-		$nyop_max = it_exchange_format_price( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_max' ) ) );
+		$nyop_min = it_exchange_format_price( it_exchange_convert_from_database_number( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_min' ) ) ) );
+		$nyop_max = it_exchange_format_price( it_exchange_convert_from_database_number( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_max' ) ) ) );
 		
 		?>
         
@@ -174,9 +174,8 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
         <label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'Something goes here?.', 'LION' ); ?>">i</span></label>
         <div class="it-exchange-customer-pricing-output-wrapper">
         	<select class="it-exchange-customer-pricing-output-type" name="it-exchange-customer-pricing-output-type">
-				<option value="awesome" <?php selected( $output_type, 'awesome' ); ?>><?php _e( 'Awesome', 'LION' ); ?></option>
 				<option value="radio" <?php selected( $output_type, 'radio' ); ?>><?php _e( 'Radio', 'LION' ); ?></option>
-				<option value="select" <?php selected( $output_type, 'select' ); ?>><?php _e( 'Select', 'LION' ); ?></option>
+				<option value="select" <?php selected( $output_type, 'select' ); ?>><?php _e( 'Drop Down', 'LION' ); ?></option>
             </select>
         </div>
         
@@ -247,6 +246,9 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		} else {
 			it_exchange_update_product_feature( $product_id, 'customer-pricing', $_POST['it-exchange-customer-pricing-output-type'], array( 'setting' => 'output-type' ) );
 		}
+		
+		$output_type = empty( $_POST['it-exchange-customer-pricing-output-type'] ) ? 'radio' : $_POST['it-exchange-customer-pricing-output-type'];
+		it_exchange_update_product_feature( $product_id, 'customer-pricing', $output_type, array( 'setting' => 'output_type' ) );
 		
 		//nyop = Name Your Own Price
 		$nyop_enabled = empty( $_POST['it-exchange-customer-pricing-enable-nyop'] ) ? 'no' : 'yes';
@@ -327,10 +329,10 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 				return empty( $nyop_enabled ) ? 'no' : $nyop_enabled;
 				break;
 			case 'nyop_min':
-				return it_exchange_convert_from_database_number( get_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-min', true ) );
+				return get_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-min', true );
 				break;
 			case 'nyop_max':
-				return it_exchange_convert_from_database_number( get_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-max', true ) );
+				return get_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-max', true );
 				break;
 			
 		}
