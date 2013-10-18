@@ -148,8 +148,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			$options = ITUtility::merge_defaults( $options, $defaults );
 
 			$hidden = '';
-			$result     = '';
-			$base_price = 0;
+			$result = '';
 			
 			$price_options = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'pricing-options' ) );
 			$output_type = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'output_type' ) );
@@ -216,6 +215,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			
 			global $post;
 			$result .= '<input type="hidden" class="it-exchange-customer-pricing-product-id" name="it-exchange-customer-pricing-product-id" value="' . $post->ID . '">';
+			$result .= '<input type="hidden" class="it-exchange-customer-pricing-new-base-price" name="it-exchange-customer-pricing-new-base-price" value="">';
 
 			$result .= $options['after'];
 
