@@ -202,7 +202,20 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			
 			if ( 'yes' === $nyop_enabled ) {
 				$result .= '<input class="it-exchange-customer-pricing-base-price-nyop-input ' . $hidden . '" type="text" name="it_exchange_customer_pricing_base_price_selector" value="" />';
+				if ( empty( $price_options ) )
+					$result .= ' ' . __( 'Name your own price', 'LION' );
+					
+				$result .= '<p class="it-exchange-customer-pricing-base-price-nyop-description ' . $hidden . '">';
+				if ( !empty( $nyop_min ) && 0 < $nyop_min )
+					$result .= sprintf( __( 'min: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_min ) ) );
+					
+				if ( !empty( $nyop_max ) && 0 < $nyop_max )
+					$result .= sprintf( __( 'max: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) ) );
+				$result .= '</p>';
 			}
+			
+			global $post;
+			$result .= '<input type="hidden" class="it-exchange-customer-pricing-product-id" name="it-exchange-customer-pricing-product-id" value="' . $post->ID . '">';
 
 			$result .= $options['after'];
 

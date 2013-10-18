@@ -112,6 +112,7 @@ add_action( 'admin_print_styles', 'it_exchange_customer_pricing_addon_admin_wp_e
 function it_exchange_customer_pricing_addon_load_public_scripts( $current_view ) {
 	// Frontend Customer Pricing Dashboard CSS & JS
 	wp_enqueue_script( 'it-exchange-customer-pricing-addon-public-js', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/js/customer-pricing.js' ), array( 'jquery' ), false, true );
+	wp_localize_script( 'it-exchange-customer-pricing-addon-public-js', 'it_exchange_customer_pricing_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	wp_enqueue_style( 'it-exchange-customer-pricing-addon-public-css', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/styles/customer-pricing.css' ) );
 }
 add_action( 'wp_enqueue_scripts', 'it_exchange_customer_pricing_addon_load_public_scripts' );
