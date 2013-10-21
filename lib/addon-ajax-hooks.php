@@ -52,7 +52,7 @@ function it_exchange_customre_pricing_ajax_format_nyop_input() {
 				$price = $min;
 		}
 		
-		if ( !empty( $nyop_max ) && $price > $nyop_max ) {
+		if ( !empty( $nyop_max ) && 0 < $nyop_max ) {
 			$max = it_exchange_convert_from_database_number( $nyop_max );
 			if ( $price > $max )
 				$price = $max;
