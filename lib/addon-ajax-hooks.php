@@ -19,9 +19,7 @@ function it_exchange_customer_pricing_ajax_add_new_price() {
 		
 		$count = $_REQUEST['count'];
 			
-		$return  = '<div class="it-exchange-customer-pricing-option columns-wrapper">';
 		$return .= it_exchange_customer_pricing_addon_build_price_option( false, $count );
-		$return .= '</div>';
 	
 	}
 	
