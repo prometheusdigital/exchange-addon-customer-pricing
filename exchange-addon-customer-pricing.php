@@ -29,7 +29,7 @@ function it_exchange_register_customer_pricing_addon() {
 		'description'       => __( 'Add Customer Pricing to your iThemes Exchange products.', 'LION' ),
 		'author'            => 'iThemes',
 		'author_url'        => 'http://ithemes.com/exchange/customer-pricing/',
-		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/customer-pricing50px.png' ),
+		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/customerpricing50px.png' ),
 		'file'              => dirname( __FILE__ ) . '/init.php',
 		'category'          => 'pricing',
 		'basename'          => plugin_basename( __FILE__ ),
