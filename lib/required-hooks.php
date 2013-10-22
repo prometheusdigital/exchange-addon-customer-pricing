@@ -188,9 +188,8 @@ function it_exchange_customer_pricing_content_product_product_info_loop_elements
 add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_exchange_customer_pricing_content_product_product_info_loop_elements' );
 
 function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {
-	
-	if ( $customer_prices = it_exchange_get_session_data( 'customer-pricing' ) ) {
-		
+	if ( $customer_prices = it_exchange_get_session_data( 'customer-prices' ) ) {
+
 		if ( !empty( $customer_prices[$product['product_id']] ) ) {
 			$db_base_price = it_exchange_convert_from_database_number( $customer_prices[$product['product_id']] );
 			
@@ -199,7 +198,6 @@ function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_pric
 		}
 		
 	}
-	error_log( $db_base_price );
 	return $db_base_price;
 }
 add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer_pricing_cart_product_base_price', 10, 3 );

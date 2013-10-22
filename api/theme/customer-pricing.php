@@ -84,6 +84,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 
 			$result     = '';
 			$base_price = 0;
+			$db_price = 0;
 			$price_options = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'pricing-options' ) );
 			$nyop_enabled = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'nyop_enabled' ) );
 			
@@ -95,6 +96,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			
 			if ( !empty( $price_options ) ) {
 				foreach( $price_options as $price_option ) {
+					$db_price = $price_option['price'];
 					$price = it_exchange_convert_from_database_number( $price_option['price'] );
 					if ( 0 == $base_price || $price < $base_price )
 						$base_price = $price;
@@ -115,6 +117,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 
 			if ( 'html' == $options['format'] )
 				$result .= $options['after'];
+			$result .= '<input type="hidden" class="it-exchange-customer-pricing-new-base-price" name="it-exchange-customer-pricing-new-base-price" value="' . $db_price . '">';
 
 			return $result;
 		}
@@ -215,7 +218,6 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			
 			global $post;
 			$result .= '<input type="hidden" class="it-exchange-customer-pricing-product-id" name="it-exchange-customer-pricing-product-id" value="' . $post->ID . '">';
-			$result .= '<input type="hidden" class="it-exchange-customer-pricing-new-base-price" name="it-exchange-customer-pricing-new-base-price" value="">';
 
 			$result .= $options['after'];
 

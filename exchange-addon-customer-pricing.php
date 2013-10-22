@@ -50,7 +50,7 @@ add_action( 'it_exchange_register_addons', 'it_exchange_register_customer_pricin
 */
 /*
 function it_exchange_membership_set_textdomain() {
-	load_plugin_textdomain( 'LION', false, plugin_basename( __FILE__  ) . '/lang/' );
+	load_plugin_textdomain( 'LION', false, dirname( plugin_basename( __FILE__  ) ) . '/lang/' );
 }
 add_action( 'plugins_loaded', 'it_exchange_membership_set_textdomain' );
 */

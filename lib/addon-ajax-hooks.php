@@ -58,21 +58,24 @@ function it_exchange_customre_pricing_ajax_format_nyop_input() {
 				$price = $max;
 		}
 		
-		$return = json_encode( array( 
+		$return = array( 
 			'db_price' => it_exchange_convert_to_database_number( $price ), 
 			'price' => it_exchange_format_price( $price ) 
-		) );
+		);
+		
+		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
+		$customer_prices[$post_id] = $return['db_price'];
+		it_exchange_update_session_data( 'customer-prices', $customer_prices );
 		
 	}
 	
-	die( $return );
+	die( json_encode( $return ) );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customre_pricing_ajax_format_nyop_input' );
 add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customre_pricing_ajax_format_nyop_input' );
 
 function it_exchange_customer_pricing_session() {
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
-		error_log( 'ajax' );
 		$price = $_POST['input'];
 		$post_id = $_POST['post_id'];
 		
@@ -80,22 +83,20 @@ function it_exchange_customer_pricing_session() {
 		$nyop_max = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_max' ) );
 		
 		if ( !empty( $nyop_min ) && 0 < $nyop_min ) {
-			$min = it_exchange_convert_from_database_number( $nyop_min );
-			if ( $price < $min )
-				$price = $min;
+			if ( $price < $nyop_min )
+				$price = $nyop_min;
 		}
 		
-		if ( !empty( $nyop_max ) && $price > $nyop_max ) {
-			$max = it_exchange_convert_from_database_number( $nyop_max );
-			if ( $price > $max )
-				$price = $max;
+		if ( !empty( $nyop_max ) && 0 < $nyop_max ) {
+			if ( $price > $nyop_max )
+				$price = $nyop_max;
 		}
 		
-		it_exchange_add_session_data( 'customer-pricing', array( $post_id => $price ) );
-		$result = it_exchange_get_session_data( 'customer-pricing' );
-		
+		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
+		$customer_prices[$post_id] = $price;
+		it_exchange_update_session_data( 'customer-prices', $customer_prices );
 	}
-	die( var_export( $result, true ) );
+	die();
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-session', 'it_exchange_customer_pricing_session' );
 add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-session', 'it_exchange_customer_pricing_session' );
