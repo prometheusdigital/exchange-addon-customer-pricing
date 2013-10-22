@@ -1,2 +1,7 @@
-/* CSS Document */
-
+.it-exchange-customer-pricing{margin:1em 0;}
+.it-exchange-customer-pricing ul{margin:0;padding:0;list-style:none;}
+.it-exchange-customer-pricing ul li{margin:0;padding:0;}
+.it-exchange-customer-pricing ul li input[type="radio"],
+.it-exchange-customer-pricing ul li input[type="checkbox"]{margin-right:10px;}
+.it-exchange-customer-pricing .it-exchange-customer-nyop-section{margin-top:1em;}
+.it-exchange-customer-pricing .it-exchange-customer-price-min{margin-right:1em;}

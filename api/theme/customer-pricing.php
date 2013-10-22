@@ -185,16 +185,19 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 
 					case 'radio':
 					default:
+						$result .= '<ul>';
 						foreach( $price_options as $price_option ) {
 							$fprice = it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
-							$result .= '<input class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . checked( 'checked', $price_option['default'], false ) . ' />' . $fprice;
+							$result .= '<li><input class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . checked( 'checked', $price_option['default'], false ) . ' />' . $fprice;
 							if ( !empty( $price_option['label'] ) )
 								$result .= ' - ' . $price_option['label'];
+							$result .= '</li>';
 						}
 						if ( 'yes' === $nyop_enabled ) {
-							$result .= '<input class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" />' . __( 'Name your own price', 'LION' );
+							$result .= '<li class="it-exchange-nyop-option"><input class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" />' . __( 'Name your own price', 'LION' ) . '</li>';
 							$hidden = 'it-exchange-hidden';
 						}
+						$result .= '</ul>';
 						$result .= '</select>';
 						break;
 					
@@ -203,17 +206,19 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			}
 			
 			if ( 'yes' === $nyop_enabled ) {
+				$result .= '<div class="it-exchange-customer-nyop-section">';
 				$result .= '<input class="it-exchange-customer-pricing-base-price-nyop-input ' . $hidden . '" type="text" name="it_exchange_customer_pricing_base_price_selector" value="" />';
 				if ( empty( $price_options ) )
 					$result .= ' ' . __( 'Name your own price', 'LION' );
 					
 				$result .= '<p class="it-exchange-customer-pricing-base-price-nyop-description ' . $hidden . '">';
 				if ( !empty( $nyop_min ) && 0 < $nyop_min )
-					$result .= sprintf( __( 'min: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_min ) ) );
+					$result .= '<span class="it-exchange-customer-price-min">' . sprintf( __( 'Min: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_min ) ) ) . '</span>';
 					
 				if ( !empty( $nyop_max ) && 0 < $nyop_max )
-					$result .= sprintf( __( 'max: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) ) );
+					$result .= '<span class="it-exchange-customer-price-max">' . sprintf( __( 'Max: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) ) ) . '</span>';
 				$result .= '</p>';
+				$result .= '</div>';
 			}
 			
 			global $post;
