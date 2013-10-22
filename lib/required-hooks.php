@@ -120,9 +120,9 @@ add_action( 'wp_enqueue_scripts', 'it_exchange_customer_pricing_addon_load_publi
 function it_exchange_customer_pricing_before_print_metabox_base_price( $product ) {
 	
 	$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
-	$hide = ( 'yes' == $enabled ) ? 'hide-if-js' : '';
+	$hide = ( 'yes' == $enabled ) ? ' hide-if-js' : '';
 
-	$html  = '<div id="base-price-customer-pricing-disabled" class="' . $hide . '">';
+	$html  = '<div id="base-price-customer-pricing-disabled" class="base-price-customer-pricing-toggle' . $hide . '">';
 	
 	echo $html;
 }
@@ -141,12 +141,12 @@ function it_exchange_customer_pricing_after_print_metabox_base_price( $product )
 	$description = apply_filters( 'it_exchange_base-price_addon_metabox_description', $description );
 	
 	$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
-	$hide = ( 'no' == $enabled ) ? 'hide-if-js' : '';
+	$hide = ( 'no' == $enabled ) ? ' hide-if-js' : '';
 	
 	$html  = '</div>'; //ending starting div from it_exchange_customer_pricing_before_print_metabox_base_price
-	$html .= '<div id="base-price-customer-pricing-enabled" class="' . $hide . '">';	
+	$html .= '<div id="base-price-customer-pricing-enabled" class="base-price-customer-pricing-toggle' . $hide . '">';	
 	$html .= '<label for="base-price">' . esc_html( $description ) . '</label>';
-	$html .= '<div>' . __( 'Customer Pricing', 'LION' ) . ' <span class="tip" title="' . __( 'To change the pricing for this product, go to Customer Pricing under the Advanced section.', 'LION' ) . '">i</span></div>';
+	$html .= '<input type="text" class="customer-pricing-enabled" value="' . __( 'Customer Pricing', 'LION' ) . '" disabled /><span class="tip" title="' . __( 'To change the pricing for this product, go to Customer Pricing under the Advanced section.', 'LION' ) . '">i</span>';
 	$html .= '</div>';
 	
 	echo $html;
