@@ -128,6 +128,14 @@ function it_exchange_customer_pricing_before_print_metabox_base_price( $product 
 }
 add_action( 'it_exchange_before_print_metabox_base_price', 'it_exchange_customer_pricing_before_print_metabox_base_price' );
 
+/**
+ * Replaces default base_price metabox content with customer-pricing metabox content
+ *
+ * @since 1.0.0
+ *
+ * @param object $product iThemes Exchange Product Object
+ * @return void
+*/
 function it_exchange_customer_pricing_after_print_metabox_base_price( $product ) {
 	$description = __( 'Price', 'LION' );
 	$description = apply_filters( 'it_exchange_base-price_addon_metabox_description', $description );
@@ -173,6 +181,14 @@ function it_exchange_customer_pricing_store_product_product_info_loop_elements( 
 }
 add_filter( 'it_exchange_get_store_product_product_info_loop_elements', 'it_exchange_customer_pricing_store_product_product_info_loop_elements' );
 
+/**
+ * Replaces base-price content product element with customer-pricing element, if found
+ *
+ * @since 1.0.0
+ *
+ * @param array $parts Element array for temmplate parts
+ * @return array Modified array with new customer-pricing element (if base-price was found).
+*/
 function it_exchange_customer_pricing_content_product_product_info_loop_elements( $parts ) {
 	$product = $GLOBALS['it_exchange']['product'];
 	
@@ -187,6 +203,16 @@ function it_exchange_customer_pricing_content_product_product_info_loop_elements
 }
 add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_exchange_customer_pricing_content_product_product_info_loop_elements' );
 
+/**
+ * Replaces base-price with customer's set price from session data
+ *
+ * @since 1.0.0
+ *
+ * @param string $db_base_price default Base Price
+ * @param array $product iThemes Exchange Product
+ * @param bool $format Whether or not the price should be formatted 
+ * @return string $db_base_price modified, if customer price has been set for product
+*/
 function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {
 	if ( $customer_prices = it_exchange_get_session_data( 'customer-prices' ) ) {
 
@@ -201,3 +227,38 @@ function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_pric
 	return $db_base_price;
 }
 add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer_pricing_cart_product_base_price', 10, 3 );
+
+/**
+ * Replaces base-price with default customer-pricing setting on Products page in WP Dashboard
+ * Or the lowest price option if no default has been set
+ *
+ * @since 1.0.0
+ *
+ * @param string $base_price default Base Price
+ * @param int $product_id iThemes Exchange Product ID
+ * @param array $options Any options being passed through function 
+ * @return string $base_price modified, if  customer pricing has been enabled for product
+*/
+function it_exchange_customer_pricing_get_product_feature_base_price( $base_price, $product_id, $options ) {
+	if ( it_exchange_product_has_feature( $product_id, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+		if ( 'yes' === $enabled = it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+			$price_options = it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'pricing-options' ) );
+			if ( !empty( $price_options ) ) {
+				foreach( $price_options as $price_option ) {
+					$db_price = $price_option['price'];
+					$price = it_exchange_convert_from_database_number( $price_option['price'] );
+					if ( 0 == $base_price || $price < $base_price )
+						$base_price = $price;
+					if ( 'checked' === $price_option['default'] ) {
+						$base_price = $price;
+						break;
+					}
+				}
+			} else {
+				$base_price = 0;	
+			}
+		}
+	}
+	return $base_price;
+}
+add_filter( 'it_exchange_get_product_feature_base-price', 'it_exchange_customer_pricing_get_product_feature_base_price', 10, 3 );

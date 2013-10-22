@@ -12,32 +12,25 @@
  * @return string HTML output of content access rule row div
 */
 function it_exchange_customer_pricing_ajax_add_new_price() {
-	
 	$return = '';
-	
 	if ( isset( $_REQUEST['count'] ) ) { //use isset() in case count is 0
-		
 		$count = $_REQUEST['count'];
-			
 		$return .= it_exchange_customer_pricing_addon_build_price_option( false, $count );
-	
 	}
-	
 	die( $return );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-add-new-price', 'it_exchange_customer_pricing_ajax_add_new_price' );
 
 /**
  * AJAX function called to add new price option rows
+ * Also updates the customer-pricing session data with customer's choice
  *
  * @since 1.0.0
- * @return string HTML output of content access rule row div
+ * @return string json encoded array with db_price and formated price
 */
 function it_exchange_customre_pricing_ajax_format_nyop_input() {
 	$return = '';
-	
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
-		
 		$price = $_POST['input'];
 		$post_id = $_POST['post_id'];
 		
@@ -64,14 +57,17 @@ function it_exchange_customre_pricing_ajax_format_nyop_input() {
 		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
 		$customer_prices[$post_id] = $return['db_price'];
 		it_exchange_update_session_data( 'customer-prices', $customer_prices );
-		
 	}
-	
 	die( json_encode( $return ) );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customre_pricing_ajax_format_nyop_input' );
 add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customre_pricing_ajax_format_nyop_input' );
-
+/**
+ * AJAX function called to update the customer-pricing session data with customer's choice
+ *
+ * @since 1.0.0
+ * @return void
+*/
 function it_exchange_customer_pricing_session() {
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
 		$price = $_POST['input'];

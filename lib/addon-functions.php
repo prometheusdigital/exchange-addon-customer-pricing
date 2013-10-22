@@ -5,6 +5,15 @@
  * @since 1.0.0
 */
 
+/**
+ * Builds pricing option row for WP Dashboard Product Edit Page
+ *
+ * @since 1.0.0
+ *
+ * @param array $price_option Current Price Option
+ * @param int $count Current Row count 
+ * @return string HTML formated price option row
+*/
 function it_exchange_customer_pricing_addon_build_price_option( $price_option, $count ) {
 	
 	$price = empty( $price_option['price'] ) ? '' : it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
