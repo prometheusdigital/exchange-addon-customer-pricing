@@ -15,7 +15,11 @@ function it_exchange_customer_pricing_ajax_add_new_price() {
 	$return = '';
 	if ( isset( $_REQUEST['count'] ) ) { //use isset() in case count is 0
 		$count = $_REQUEST['count'];
-		$return .= it_exchange_customer_pricing_addon_build_price_option( false, $count );
+		if ( 0 == $count )
+			$add_new_first = true;
+		else
+			$add_new_first = false;
+		$return .= it_exchange_customer_pricing_addon_build_price_option( false, $count, $add_new_first );
 	}
 	die( $return );
 }

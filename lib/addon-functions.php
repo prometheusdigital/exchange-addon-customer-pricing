@@ -12,9 +12,10 @@
  *
  * @param array $price_option Current Price Option
  * @param int $count Current Row count 
+ * @param bool $add_new_first (optional) If this is the first rule being added, set to true
  * @return string HTML formated price option row
 */
-function it_exchange_customer_pricing_addon_build_price_option( $price_option, $count ) {
+function it_exchange_customer_pricing_addon_build_price_option( $price_option, $count, $add_new_first = false ) {
 	
 	$price = empty( $price_option['price'] ) ? '' : it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
 	$label  = empty( $price_option['label'] ) ? '' : $price_option['label'];
@@ -34,12 +35,13 @@ function it_exchange_customer_pricing_addon_build_price_option( $price_option, $
 	$return .= '<div class="column-inner">';
 	$return .= '<input type="text" class="it-exchange-customer-pricing-label" name="it-exchange-customer-pricing-options[' . $count . '][label]" value="' . $label . '" />';
 	$return .= '<div class="it-exchange-customer-pricing-content-default">';
-	if ( 'checked' == $default ) {
+	if ( 'checked' == $default || $add_new_first ) {
 		$return .= '<span class="it-exchange-customer-pricing-content-default-checkmark it-exchange-customer-pricing-content-default-checkmark-checked"></span>';	
+		$return .= '<input type="hidden" class="it-exchange-customer-pricing-default" name="it-exchange-customer-pricing-options[' . $count . '][default]" value="checked" />';
 	} else {
 		$return .= '<span class="it-exchange-customer-pricing-content-default-checkmark"></span>';
+		$return .= '<input type="hidden" class="it-exchange-customer-pricing-default" name="it-exchange-customer-pricing-options[' . $count . '][default]" value="unchecked" />';
 	}
-	$return .= '<input type="hidden" class="it-exchange-customer-pricing-default" name="it-exchange-customer-pricing-options[' . $count . '][default]" value="' . $default . '" />';
 	$return .= '</div>';
 	$return .= '</div>';
 	$return .= '</div>';
