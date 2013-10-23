@@ -214,10 +214,10 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 					
 				$result .= '<p class="it-exchange-customer-pricing-base-price-nyop-description ' . $hidden . '">';
 				if ( !empty( $nyop_min ) && 0 < $nyop_min )
-					$result .= '<span class="it-exchange-customer-price-min">' . sprintf( __( 'Min: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_min ) ) ) . '</span>';
+					$result .= '<span class="it-exchange-customer-price-min"><small>' . sprintf( __( 'Min: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_min ) ) ) . '</small></span>';
 					
 				if ( !empty( $nyop_max ) && 0 < $nyop_max )
-					$result .= '<span class="it-exchange-customer-price-max">' . sprintf( __( 'Max: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) ) ) . '</span>';
+					$result .= '<span class="it-exchange-customer-price-max"><small>' . sprintf( __( 'Max: %s', 'LION' ), it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) ) ) . '</small></span>';
 				$result .= '</p>';
 				$result .= '</div>';
 			}
