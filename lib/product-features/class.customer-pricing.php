@@ -377,7 +377,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		if ( ! it_exchange_product_type_supports_feature( $product_type, 'customer-pricing' ) )
 			return false;
 			
-// Determine if this product has turned on product availability
+		// Determine if this product has turned on product availability
 		if ( 'no' == it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) 
 			return false;
 
