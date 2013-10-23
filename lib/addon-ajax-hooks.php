@@ -73,19 +73,6 @@ function it_exchange_customer_pricing_session() {
 		$price = $price;
 		$post_id = $_POST['post_id'];
 		
-		$nyop_min = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
-		$nyop_max = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_max' ) );
-		
-		if ( !empty( $nyop_min ) && 0 < $nyop_min ) {
-			if ( $price < $nyop_min )
-				$price = $nyop_min;
-		}
-		
-		if ( !empty( $nyop_max ) && 0 < $nyop_max ) {
-			if ( $price > $nyop_max )
-				$price = $nyop_max;
-		}
-		
 		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
 		$customer_prices[$post_id] = $price;
 		it_exchange_update_session_data( 'customer-prices', $customer_prices );
