@@ -26,7 +26,7 @@
 function it_exchange_register_customer_pricing_addon() {
 	$options = array(
 		'name'              => __( 'Customer Pricing', 'LION' ),
-		'description'       => __( 'Add Customer Pricing to your iThemes Exchange products.', 'LION' ),
+		'description'       => __( 'Let customers choose their price from a list of price options you create or let them enter their own price.', 'LION' ),
 		'author'            => 'iThemes',
 		'author_url'        => 'http://ithemes.com/exchange/customer-pricing/',
 		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/customerpricing50px.png' ),
