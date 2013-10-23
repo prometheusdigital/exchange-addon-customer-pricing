@@ -1,5 +1,5 @@
 #it-exchange-product-customer-pricing input[type="text"]{width:100%;}
-#it-exchange-advanced-tabs .it-exchange-customer-pricing-option input{font-family:'Open Sans',sans-serif;font-size:13px;font-weight:bold;}
+#it-exchange-advanced-tabs .it-exchange-customer-pricing-option input{font-size:13px;font-weight:bold;}
 .it-exchange-customer-pricing-option:hover .it-exchange-remove-item{border-color:#BBB;}
 #normal-sortables #it-exchange-base-price .customer-pricing-enabled{text-align:left;}
 #base-price-customer-pricing-enabled{position:relative;}
@@ -19,8 +19,10 @@
 .it-exchange-customer-pricing-content-label .column-inner{position:relative;}
 .it-exchange-customer-pricing-remove-option{width:7%;}
 .it-exchange-customer-pricing-content-default{position:absolute;top:18px;right:16px;}
-.it-exchange-customer-pricing-content-default-checkmark{display:block;width:15px;height:17px;background:url('images/check-gray.png') center center no-repeat;}
-.it-exchange-customer-pricing-content-default-checkmark-checked{background-image:url('images/check-green.png');}
+.it-exchange-customer-pricing-content-default-checkmark{display:block;width:15px;height:17px;background:url('images/check-gray.png') center center no-repeat;cursor:pointer;}
+.it-exchange-customer-pricing-content-default-checkmark:hover,
+.it-exchange-customer-pricing-content-default-checkmark-checked{background:url('images/check-green.png') center center no-repeat;border:none;cursor:pointer;}
 .it-exchange-customer-pricing-no-prices{padding:10px;}
 .it-exchange-customer-pricing-enable-nyop{max-width:300px;}
 .it-exchange-customer-pricing-enable-nyop .column{width:40%;margin-right:10%;}
+.it-exchange-customer-pricing-remove-option .it-exchange-remove-item{margin-top:9px;}
