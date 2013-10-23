@@ -60,7 +60,7 @@ function it_exchange_customer_pricing_addon_admin_wp_enqueue_scripts( $hook_suff
 	
 	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type ) {
 		$deps = array( 'post', 'jquery-ui-sortable', 'jquery-ui-droppable', 'jquery-ui-tabs', 'jquery-ui-tooltip', 'jquery-ui-datepicker', 'autosave' );
-		wp_enqueue_script( 'it-exchange-membership-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/admin/js/add-edit-product.js', $deps );
+		wp_enqueue_script( 'it-exchange-customer-pricing-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/admin/js/add-edit-product.js', $deps );
 	}
 }
 add_action( 'admin_enqueue_scripts', 'it_exchange_customer_pricing_addon_admin_wp_enqueue_scripts' );
@@ -96,7 +96,7 @@ function it_exchange_customer_pricing_addon_admin_wp_enqueue_styles() {
 
 	// Exchange Product pages
 	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type ) {
-		wp_enqueue_style( 'it-exchange-membership-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/admin/styles/add-edit-product.css' );
+		wp_enqueue_style( 'it-exchange-customer-pricing-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/admin/styles/add-edit-product.css' );
 	}
 }
 add_action( 'admin_print_styles', 'it_exchange_customer_pricing_addon_admin_wp_enqueue_styles' );

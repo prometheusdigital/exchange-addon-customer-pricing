@@ -1,6 +1,6 @@
 <?php
 /**
- * This will control membership welcome messages on the frontend membership dashboard
+ * This will control customer pricing options on the frontend products
  *
  * @since 1.0.0
  * @package IT_Exchange_Addon_Customer_Pricing
