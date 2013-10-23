@@ -62,7 +62,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 		$this->_current_page   = empty( $_GET['page'] ) ? false : $_GET['page'];
 		$this->_current_add_on = empty( $_GET['add-on-settings'] ) ? false : $_GET['add-on-settings'];
 
-		if ( ! empty( $_POST ) && $this->_is_admin && 'it-exchange-addons' == $this->_current_page && 'mailchimp' == $this->_current_add_on ) {
+		if ( ! empty( $_POST ) && $this->_is_admin && 'it-exchange-addons' == $this->_current_page && 'customer-pricing' == $this->_current_add_on ) {
 			add_action( 'it_exchange_save_add_on_settings_customer_pricing', array( $this, 'save_settings' ) );
 			do_action( 'it_exchange_save_add_on_settings_customer_pricing' );
 		}
@@ -96,7 +96,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 
 			<?php $form->start_form( $form_options, 'it-exchange-customer-pricing-settings' ); ?>
 				<?php do_action( 'it_exchange_customer_pricing_settings_form_top' ); ?>
-				<?php $this->get_customer_pricing_payment_form_table( $form, $form_values ); ?>
+				<?php $this->get_customer_pricing_form_table( $form, $form_values ); ?>
 				<?php do_action( 'it_exchange_customer_pricing_settings_form_bottom' ); ?>
 				<p class="submit">
 					<?php $form->add_submit( 'submit', array( 'value' => __( 'Save Changes', 'LION' ), 'class' => 'button button-primary button-large' ) ); ?>
@@ -108,7 +108,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 		<?php
 	}
 
-	function get_customer_pricing_payment_form_table( $form, $settings = array() ) {
+	function get_customer_pricing_form_table( $form, $settings = array() ) {
 		if ( !empty( $settings ) )
 			foreach ( $settings as $key => $var )
 				$form->set_option( $key, $var );
@@ -120,6 +120,14 @@ class IT_Exchange_Customer_Pricing_Add_On {
 			<p> <?php $form->add_text_box( 'customer-pricing-or-more-label' ); ?> </p>
 			<h4><label for="customer-pricing-nyop-label"><?php _e( '"Name your price" Label', 'LION' ) ?> <span class="tip" title="<?php _e( 'The label that appears next to the "name your price" label.', 'LION' ); ?>">i</span></label></h4>
 			<p> <?php $form->add_text_box( 'customer-pricing-nyop-label' ); ?> </p>
+            
+            <h4><label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'How would you like the price options to display?', 'LION' ); ?>">i</span></label></h4>
+			<p> <?php 
+			$output_types = array(
+				'radio' => __( 'Radio', 'LION' ),
+				'select' => __( 'Drop Down', 'LION' ),
+			);
+			$form->add_drop_down( 'customer-pricing-output-type', $output_types ); ?> </p>
 		</div>
 		<?php
 	}
@@ -161,7 +169,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 	*/
 	function get_form_errors( $values ) {
 		
-		$default_wizard_customer_pricing_settings = apply_filters( 'default_customer_pricing_settings', array( 'customercustomer-pricing-or-more-label', 'customer-pricing-nyop-label' ) );
+		$default_wizard_customer_pricing_settings = apply_filters( 'default_customer_pricing_settings', array( 'customercustomer-pricing-or-more-label', 'customer-pricing-nyop-label', 'customer-pricing-output-type' ) );
 		$errors = array();
 		return $errors;
 	}
@@ -175,6 +183,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 	function set_default_settings( $defaults ) {
 		$defaults['customer-pricing-or-more-label'] = __( 'or more', 'LION' );
 		$defaults['customer-pricing-nyop-label']    = __( 'Name your price!', 'LION' );
+		$defaults['customer-pricing-output-type']   = 'radio';
 		return $defaults;
 	}
 }

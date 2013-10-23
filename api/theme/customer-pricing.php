@@ -150,9 +150,10 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			$addon_settings = it_exchange_get_option( 'addon_customer_pricing' );
 			
 			$defaults   = array(
-				'before'     => '',
-				'after'      => '',
-				'nyop-label' => $addon_settings['customer-pricing-nyop-label'],
+				'before'      => '',
+				'after'       => '',
+				'nyop-label'  => $addon_settings['customer-pricing-nyop-label'],
+				'output-type' => $addon_settings['customer-pricing-output-type'],
 			);
 			$options = ITUtility::merge_defaults( $options, $defaults );
 
@@ -160,7 +161,6 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			$result = '';
 			
 			$price_options = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'pricing-options' ) );
-			$output_type = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'output_type' ) );
 			//nyop = Name Your Own Price
 			$nyop_enabled = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'nyop_enabled' ) );
 			$nyop_min = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
@@ -177,7 +177,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 					
 				} else {
 						
-					switch ( $output_type ) {
+					switch ( $options['output-type'] ) {
 					
 						case 'select':
 							$result .= '<select class="it-exchange-customer-pricing-base-price-selector" name="it_exchange_customer_pricing_base_price_selector">';

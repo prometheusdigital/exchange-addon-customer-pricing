@@ -110,7 +110,6 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		// Set the value of the feature for this product
 		$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
 		$price_options = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'pricing-options' ) );
-		$output_type = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'output_type' ) );
 		//nyop = Name Your Own Price
 		$nyop_enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_enabled' ) );
 		$nyop_min = it_exchange_format_price( it_exchange_convert_from_database_number( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_min' ) ) ) );
@@ -175,14 +174,6 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	            <a href class="button"><?php _e( 'Add New Price', 'LION' ); ?></a>
 	        </div>
 		</div>
-        
-        <label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'How would you like the price options to display?', 'LION' ); ?>">i</span></label>
-        <div class="it-exchange-customer-pricing-output-wrapper">
-        	<select class="it-exchange-customer-pricing-output-type" name="it-exchange-customer-pricing-output-type">
-				<option value="radio" <?php selected( $output_type, 'radio' ); ?>><?php _e( 'Radio', 'LION' ); ?></option>
-				<option value="select" <?php selected( $output_type, 'select' ); ?>><?php _e( 'Drop Down', 'LION' ); ?></option>
-            </select>
-        </div>
         
 		<p class="it-exchange-customer-pricing-nyop-checkbox">
 		<input type="checkbox" id="it-exchange-customer-pricing-enable-nyop"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable-nyop" value="yes" <?php checked( 'yes', $nyop_enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable-nyop"><?php _e( 'Let customers name their own price?', 'LION' ); ?> <span class="tip" title="<?php _e( 'This allows your customers to set their own price.', 'LION' ); ?>">i</span></label>
@@ -249,15 +240,6 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			$pricing_options = false;
 		}
 		
-		if ( ! empty( $_POST['it-exchange-customer-pricing-output-type'] ) ) {
-			it_exchange_update_product_feature( $product_id, 'customer-pricing', $_POST['it-exchange-customer-pricing-output-type'], array( 'setting' => 'output-type' ) );
-		} else {
-			it_exchange_update_product_feature( $product_id, 'customer-pricing', $_POST['it-exchange-customer-pricing-output-type'], array( 'setting' => 'output-type' ) );
-		}
-		
-		$output_type = empty( $_POST['it-exchange-customer-pricing-output-type'] ) ? 'radio' : $_POST['it-exchange-customer-pricing-output-type'];
-		it_exchange_update_product_feature( $product_id, 'customer-pricing', $output_type, array( 'setting' => 'output_type' ) );
-		
 		//nyop = Name Your Own Price
 		$nyop_enabled = empty( $_POST['it-exchange-customer-pricing-enable-nyop'] ) ? 'no' : 'yes';
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_enabled, array( 'setting' => 'nyop_enabled' ) );
@@ -302,9 +284,6 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			case 'pricing-options':
 				update_post_meta( $product_id, '_it-exchange-customer-pricing-options', $new_value );
 				break;
-			case 'output_type':
-				update_post_meta( $product_id, '_it-exchange-customer-pricing-output-type', $new_value );
-				break;
 			case 'nyop_enabled':
 				update_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-enabled', $new_value );
 				break;
@@ -340,9 +319,6 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 				break;
 			case 'pricing-options':
 				return get_post_meta( $product_id, '_it-exchange-customer-pricing-options', true );
-				break;
-			case 'output_type':
-				return get_post_meta( $product_id, '_it-exchange-customer-pricing-output-type', true );
 				break;
 			case 'nyop_enabled':
 				$nyop_enabled = get_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-enabled', true );
