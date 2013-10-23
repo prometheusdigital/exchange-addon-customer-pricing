@@ -123,10 +123,10 @@ class IT_Exchange_Customer_Pricing_Add_On {
             
             <h4><label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'How would you like the price options to display?', 'LION' ); ?>">i</span></label></h4>
 			<p> <?php 
-			$output_types = array(
+			$output_types = apply_filters( 'it-exchange-customer-pricing-output-types', array(
 				'radio' => __( 'Radio', 'LION' ),
 				'select' => __( 'Drop Down', 'LION' ),
-			);
+			) );
 			$form->add_drop_down( 'customer-pricing-output-type', $output_types ); ?> </p>
 		</div>
 		<?php
