@@ -26,6 +26,23 @@ function it_exchange_customer_pricing_ajax_add_new_price() {
 add_action( 'wp_ajax_it-exchange-customer-pricing-add-new-price', 'it_exchange_customer_pricing_ajax_add_new_price' );
 
 /**
+ * AJAX function called to format price inputs on customer pricing options meta box
+ *
+ * @since 1.0.0
+ * @return string formated price
+*/
+function it_exchange_customer_pricing_ajax_format_prices() {
+	$price = 0;
+	if ( isset( $_POST['price'] ) )
+		$price = it_exchange_convert_to_database_number( $_POST['price'] );
+	
+	if ( !empty( $_POST['max'] ) && 'true' == $_POST['max'] && 0 == $price )
+		die( __( 'No Limit', 'LION' ) );
+	die( it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ) );
+}
+add_action( 'wp_ajax_it-exchange-customer-pricing-format-prices', 'it_exchange_customer_pricing_ajax_format_prices' );
+
+/**
  * AJAX function called to add new price option rows
  * Also updates the customer-pricing session data with customer's choice
  *

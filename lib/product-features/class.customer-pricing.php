@@ -114,7 +114,12 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		//nyop = Name Your Own Price
 		$nyop_enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_enabled' ) );
 		$nyop_min = it_exchange_format_price( it_exchange_convert_from_database_number( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_min' ) ) ) );
-		$nyop_max = it_exchange_format_price( it_exchange_convert_from_database_number( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_max' ) ) ) );
+		$nyop_max = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'nyop_max' ) );
+		if ( 0 == $nyop_max ) {
+			$nyop_max = __( 'No Limit', 'LION' );
+		} else {
+			$nyop_max = it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) );	
+		}
 		
 		?>
         
@@ -186,11 +191,11 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
         <div class="it-exchange-customer-pricing-enable-nyop columns-wrapper<?php echo ( 'no' == $nyop_enabled ) ? ' hide-if-js' : '' ?>">
             <div class="it-exchange-customer-pricing-nyop-min column">
                 <label for="it-exchange-customer-pricing-nyop-min"><?php _e( 'Minimum price', 'LION' ); ?></label>
-                <input type="text" id="it-exchange-customer-pricing-nyop-min" name="it-exchange-customer-pricing-nyop-min" value="<?php esc_attr_e( $nyop_min ); ?>" />
+                <input type="text" id="it-exchange-customer-pricing-nyop-min" class="it-exchange-customer-pricing-nyop-min-max" name="it-exchange-customer-pricing-nyop-min" value="<?php esc_attr_e( $nyop_min ); ?>" />
 			</div>
             <div class="it-exchange-customer-pricing-nyop-max column">
                 <label for="it-exchange-customer-pricing-nyop-max"><?php _e( 'Maximum price', 'LION' ); ?></label>
-                <input type="text" id="it-exchange-customer-pricing-nyop-max" name="it-exchange-customer-pricing-nyop-max" value="<?php esc_attr_e( $nyop_max ); ?>" />
+                <input type="text" id="it-exchange-customer-pricing-nyop-max" class="it-exchange-customer-pricing-nyop-min-max" name="it-exchange-customer-pricing-nyop-max" value="<?php esc_attr_e( $nyop_max ); ?>" />
 			</div>
         </div>
         
@@ -259,7 +264,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		
 		$nyop_max =  empty( $_POST['it-exchange-customer-pricing-nyop-max'] ) ? 0 : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-max'] );
 		
-		if ( $nyop_min > $nyop_max ) {
+		if ( 0 != $nyop_max && $nyop_min > $nyop_max) {
 			$nyop_temp = $nyop_min;
 			$nyop_min = $nyop_max;
 			$nyop_max = $nyop_temp;	
