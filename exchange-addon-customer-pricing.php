@@ -17,7 +17,7 @@
 */
 
 /**
- * This registers our plugin as a membership addon
+ * This registers our plugin as a customer pricing addon
  *
  * @since 1.0.0
  *
@@ -49,10 +49,10 @@ add_action( 'it_exchange_register_addons', 'it_exchange_register_customer_pricin
  * @return void
 */
 /*
-function it_exchange_membership_set_textdomain() {
+function it_exchange_customer_pricing_set_textdomain() {
 	load_plugin_textdomain( 'LION', false, dirname( plugin_basename( __FILE__  ) ) . '/lang/' );
 }
-add_action( 'plugins_loaded', 'it_exchange_membership_set_textdomain' );
+add_action( 'plugins_loaded', 'it_exchange_customer_pricing_set_textdomain' );
 */
 
 /**
@@ -64,9 +64,9 @@ add_action( 'plugins_loaded', 'it_exchange_membership_set_textdomain' );
  * @return void
 */
 /*
-function ithemes_exchange_addon_membership_updater_register( $updater ) { 
-	    $updater->register( 'exchange-addon-membership', __FILE__ );
+function ithemes_exchange_addon_customer_pricing_updater_register( $updater ) { 
+	    $updater->register( 'exchange-addon-customer-pricing', __FILE__ );
 }
-add_action( 'ithemes_updater_register', 'ithemes_exchange_addon_membership_updater_register' );
+add_action( 'ithemes_updater_register', 'ithemes_exchange_addon_customer_pricing_updater_register' );
 require( dirname( __FILE__ ) . '/lib/updater/load.php' );
 */

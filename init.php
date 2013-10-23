@@ -11,7 +11,7 @@
 include( 'api/load.php' );
 	
 /**
- * The following file contains utility functions specific to our membership add-on
+ * The following file contains utility functions specific to our customer pricing add-on
  * If you're building your own addon, it's likely that you will
  * need to do similar things.
 */
