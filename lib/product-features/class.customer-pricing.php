@@ -233,11 +233,13 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			$price_options = array();
 			
 			foreach( $_POST['it-exchange-customer-pricing-options'] as $key => $option ) {
-				$price_options[] = array(
-					'price' => it_exchange_convert_to_database_number( $option['price'] ),
-					'label' => $option['label'],
-					'default' => $option['default'],
-				);
+				if ( '' != trim( $option['price'] ) ) {
+					$price_options[] = array(
+						'price' => it_exchange_convert_to_database_number( $option['price'] ),
+						'label' => $option['label'],
+						'default' => $option['default'],
+					);
+				}
 			}
 			
 			it_exchange_update_product_feature( $product_id, 'customer-pricing', $price_options, array( 'setting' => 'pricing-options' ) );
