@@ -124,12 +124,12 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		?>
         
 		<p class="it-exchange-customer-pricing-checkbox">
-		<input type="checkbox" id="it-exchange-customer-pricing-enable"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable" value="yes" <?php checked( 'yes', $enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable"><?php _e( 'Enable customer price options for this product', 'LION' ); ?> <span class="tip" title="<?php _e( 'Something goes here?.', 'LION' ); ?>">i</span></label>
+		<input type="checkbox" id="it-exchange-customer-pricing-enable"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable" value="yes" <?php checked( 'yes', $enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable"><?php _e( 'Enable customer price options for this product', 'LION' ); ?> <span class="tip" title="<?php _e( 'This option allows you to accept different payment amounts for the product as selected by the customer.', 'LION' ); ?>">i</span></label>
 		</p>
         
         <div class="it-exchange-customer-pricing-enable<?php echo ( 'no' == $enabled ) ? ' hide-if-js' : '' ?>">
         
-        <label for="it-exchange-customer-pricing-options"><?php _e( 'Pricing Options', 'LION' ); ?> <span class="tip" title="<?php _e( 'Something goes here?.', 'LION' ); ?>">i</span></label>
+        <label for="it-exchange-customer-pricing-options"><?php _e( 'Pricing Options', 'LION' ); ?> <span class="tip" title="<?php _e( 'Create the price options available to your customer for this product.', 'LION' ); ?>">i</span></label>
         <div class="it-exchange-customer-pricing-list-wrapper">
 			<?php
             if ( !empty( $price_options ) )
@@ -176,7 +176,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	        </div>
 		</div>
         
-        <label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'Something goes here?.', 'LION' ); ?>">i</span></label>
+        <label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'How would you like the price options to display?', 'LION' ); ?>">i</span></label>
         <div class="it-exchange-customer-pricing-output-wrapper">
         	<select class="it-exchange-customer-pricing-output-type" name="it-exchange-customer-pricing-output-type">
 				<option value="radio" <?php selected( $output_type, 'radio' ); ?>><?php _e( 'Radio', 'LION' ); ?></option>
@@ -185,7 +185,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
         </div>
         
 		<p class="it-exchange-customer-pricing-nyop-checkbox">
-		<input type="checkbox" id="it-exchange-customer-pricing-enable-nyop"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable-nyop" value="yes" <?php checked( 'yes', $nyop_enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable-nyop"><?php _e( 'Let customers name their own price?', 'LION' ); ?> <span class="tip" title="<?php _e( 'Something goes here?.', 'LION' ); ?>">i</span></label>
+		<input type="checkbox" id="it-exchange-customer-pricing-enable-nyop"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable-nyop" value="yes" <?php checked( 'yes', $nyop_enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable-nyop"><?php _e( 'Let customers name their own price?', 'LION' ); ?> <span class="tip" title="<?php _e( 'This allows your customers to set their own price.', 'LION' ); ?>">i</span></label>
 		</p>
         
         <div class="it-exchange-customer-pricing-enable-nyop columns-wrapper<?php echo ( 'no' == $nyop_enabled ) ? ' hide-if-js' : '' ?>">
