@@ -18,7 +18,7 @@
 <div class="it-exchange-customer-pricing">
 	<?php it_exchange( 'customer-pricing', 'customer-pricing' ); ?>
 	<div class="it-exchange-product-price">
-		<p><?php it_exchange( 'customer-pricing', 'base-price', array( 'plus' => false ) ); ?></p>
+		<p><?php it_exchange( 'customer-pricing', 'base-price', array( 'show-or-more' => false ) ); ?></p>
 	</div>
 </div>
 <?php do_action( 'it_exchange_content_store_after_customer_pricing_price_element' ); ?>

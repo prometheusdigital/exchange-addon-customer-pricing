@@ -72,13 +72,16 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 
 		if ( it_exchange_product_supports_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) )
 				&& it_exchange_product_has_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+					
+			$addon_settings = it_exchange_get_option( 'addon_customer_pricing' );
 			
 			$defaults   = array(
-				'before' => '<span class="it-exchange-base-price">',
-				'after'  => '</span>',
-				'format' => 'html',
-				'free-label' => __( 'Free', 'LION' ),
-				'plus'   => true,
+				'before'        => '<span class="it-exchange-base-price">',
+				'after'         => '</span>',
+				'format'        => 'html',
+				'free-label'    => __( 'Free', 'LION' ),
+				'show-or-more'  => true,
+				'or-more-label' => $addon_settings['customer-pricing-or-more-label']
 			);
 			$options = ITUtility::merge_defaults( $options, $defaults );
 
@@ -113,7 +116,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			if ( 'html' == $options['format'] )
 				$result .= $options['before'];
 
-			$result .= $price . ( $options['plus'] ? '+' : '' );
+			$result .= $price . ( $options['show-or-more'] ? ' <span class="customer-pricing-or-more-label">' . $options['or-more-label'] . '</span>' : '' );
 
 			if ( 'html' == $options['format'] )
 				$result .= $options['after'];
@@ -143,10 +146,13 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 
 		if ( it_exchange_product_supports_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) )
 				&& it_exchange_product_has_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
+					
+			$addon_settings = it_exchange_get_option( 'addon_customer_pricing' );
 			
 			$defaults   = array(
-				'before' => '',
-				'after'  => '',
+				'before'     => '',
+				'after'      => '',
+				'nyop-label' => $addon_settings['customer-pricing-nyop-label'],
 			);
 			$options = ITUtility::merge_defaults( $options, $defaults );
 
@@ -184,7 +190,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 								$result .= '</option>';
 							}
 							if ( 'yes' === $nyop_enabled ) {
-								$result .= '<option value="other">' . __( 'Name your own price', 'LION' ) . '</option>';
+								$result .= '<option value="other">' . $options['nyop-label'] . '</option>';
 								$hidden = 'it-exchange-hidden';
 							}
 							$result .= '</select>';
@@ -202,7 +208,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 								$result .= '</li>';
 							}
 							if ( 'yes' === $nyop_enabled ) {
-								$result .= '<li class="it-exchange-nyop-option"><input id="it-exchange-customer-pricing-nyop" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" /><label for="it-exchange-customer-pricing-nyop">' . __( 'Name your own price', 'LION' ) . '</label></li>';
+								$result .= '<li class="it-exchange-nyop-option"><input id="it-exchange-customer-pricing-nyop" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" /><label for="it-exchange-customer-pricing-nyop">' . $options['nyop-label'] . '</label></li>';
 								$hidden = 'it-exchange-hidden';
 							}
 							$result .= '</ul>';

@@ -36,6 +36,7 @@ function it_exchange_register_customer_pricing_addon() {
 		'labels'      => array(
 			'singular_name' => __( 'Customer Pricing', 'LION' ),
 		),
+		'settings-callback' => 'it_exchange_customer_pricing_settings_callback',
 	);
 	it_exchange_register_addon( 'customer-pricing', $options );
 }
