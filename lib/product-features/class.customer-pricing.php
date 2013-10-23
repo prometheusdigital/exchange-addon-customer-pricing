@@ -225,7 +225,6 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $enabled, array( 'setting' => 'enabled' ) );
 		
 		if ( ! empty( $_POST['it-exchange-customer-pricing-options'] ) ) {
-			
 			$price_options = array();
 			
 			foreach( $_POST['it-exchange-customer-pricing-options'] as $key => $option ) {
@@ -237,8 +236,10 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			}
 			
 			it_exchange_update_product_feature( $product_id, 'customer-pricing', $price_options, array( 'setting' => 'pricing-options' ) );
+			$pricing_options = true;
 		} else {
 			it_exchange_update_product_feature( $product_id, 'customer-pricing', array(), array( 'setting' => 'pricing-options' ) );
+			$pricing_options = false;
 		}
 		
 		if ( ! empty( $_POST['it-exchange-customer-pricing-output-type'] ) ) {
@@ -259,6 +260,11 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		
 		$nyop_max =  empty( $_POST['it-exchange-customer-pricing-nyop-max'] ) ? '' : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-max'] );
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_max, array( 'setting' => 'nyop_max' ) );
+		
+		// If there weren't any pricing options set and name your own price isn't set, disable
+		// customer pricing for this product
+		if ( !$pricing_options && 'no' === $nyop_enabled )
+			it_exchange_update_product_feature( $product_id, 'customer-pricing', 'no', array( 'setting' => 'enabled' ) );
 				
 	}
 
