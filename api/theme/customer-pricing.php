@@ -199,7 +199,6 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 							$hidden = 'it-exchange-hidden';
 						}
 						$result .= '</ul>';
-						$result .= '</select>';
 						break;
 					
 				}
