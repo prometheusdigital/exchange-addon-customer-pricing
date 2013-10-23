@@ -32,26 +32,25 @@ function it_exchange_customre_pricing_ajax_format_nyop_input() {
 	$return = '';
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
 		$price = $_POST['input'];
+		$price = it_exchange_convert_to_database_number( $price );
 		$post_id = $_POST['post_id'];
 		
 		$nyop_min = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
 		$nyop_max = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_max' ) );
 		
 		if ( !empty( $nyop_min ) && 0 < $nyop_min ) {
-			$min = it_exchange_convert_from_database_number( $nyop_min );
-			if ( $price < $min )
-				$price = $min;
+			if ( $price < $nyop_min )
+				$price = $nyop_min;
 		}
 		
 		if ( !empty( $nyop_max ) && 0 < $nyop_max ) {
-			$max = it_exchange_convert_from_database_number( $nyop_max );
-			if ( $price > $max )
-				$price = $max;
+			if ( $price > $nyop_max )
+				$price = $nyop_max;
 		}
 		
 		$return = array( 
-			'db_price' => it_exchange_convert_to_database_number( $price ), 
-			'price' => it_exchange_format_price( $price ) 
+			'db_price' => $price, 
+			'price' => it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ) 
 		);
 		
 		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
@@ -71,6 +70,7 @@ add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-format-nyop-input', 'it
 function it_exchange_customer_pricing_session() {
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
 		$price = $_POST['input'];
+		$price = $price;
 		$post_id = $_POST['post_id'];
 		
 		$nyop_min = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
