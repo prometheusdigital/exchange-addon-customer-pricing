@@ -255,10 +255,17 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		$nyop_enabled = empty( $_POST['it-exchange-customer-pricing-enable-nyop'] ) ? 'no' : 'yes';
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_enabled, array( 'setting' => 'nyop_enabled' ) );
 		
-		$nyop_min =  empty( $_POST['it-exchange-customer-pricing-nyop-min'] ) ? '' : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-min'] );
-		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_min, array( 'setting' => 'nyop_min' ) );
+		$nyop_min =  empty( $_POST['it-exchange-customer-pricing-nyop-min'] ) ? 0 : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-min'] );
 		
-		$nyop_max =  empty( $_POST['it-exchange-customer-pricing-nyop-max'] ) ? '' : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-max'] );
+		$nyop_max =  empty( $_POST['it-exchange-customer-pricing-nyop-max'] ) ? 0 : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-max'] );
+		
+		if ( $nyop_min > $nyop_max ) {
+			$nyop_temp = $nyop_min;
+			$nyop_min = $nyop_max;
+			$nyop_max = $nyop_temp;	
+		}
+		
+		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_min, array( 'setting' => 'nyop_min' ) );
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_max, array( 'setting' => 'nyop_max' ) );
 		
 		// If there weren't any pricing options set and name your own price isn't set, disable
