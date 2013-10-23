@@ -216,7 +216,8 @@ add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_ex
 function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {
 	if ( $customer_prices = it_exchange_get_session_data( 'customer-prices' ) ) {
 
-		if ( !empty( $customer_prices[$product['product_id']] ) ) {
+		// Use isset incase price is set to 0.00
+		if ( isset( $customer_prices[$product['product_id']] ) ) {
 			$db_base_price = it_exchange_convert_from_database_number( $customer_prices[$product['product_id']] );
 			
 			if ( $format )
