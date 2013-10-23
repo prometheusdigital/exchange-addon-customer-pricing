@@ -163,44 +163,53 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			$result .= $options['before'];
 				
 			if ( !empty( $price_options ) ) {
-					
-				switch ( $output_type ) {
 				
-					case 'select':
-						$result .= '<select class="it-exchange-customer-pricing-base-price-selector" name="it_exchange_customer_pricing_base_price_selector">';
-						foreach( $price_options as $price_option ) {
-							$fprice = it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
-							$result .= '<option data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . selected( 'checked', $price_option['default'], false ) . ' >' . $fprice;
-							if ( !empty( $price_option['label'] ) )
-								$result .= ' - ' . $price_option['label'];
-							
-							$result .= '</option>';
-						}
-						if ( 'yes' === $nyop_enabled ) {
-							$result .= '<option value="other">' . __( 'Name your own price', 'LION' ) . '</option>';
-							$hidden = 'it-exchange-hidden';
-						}
-						$result .= '</select>';
-						break;
-
-					case 'radio':
-					default:
-						$result .= '<ul>';
-						foreach( $price_options as $price_option ) {
-							$fprice = it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
-							$result .= '<li><input id="it-exchange-customer-pricing-' . $fprice . '" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . checked( 'checked', $price_option['default'], false ) . ' /><label for="it-exchange-customer-pricing-' . $fprice . '">' . $fprice;
-							if ( !empty( $price_option['label'] ) )
-								$result .= ' - ' . $price_option['label'];
-							$result .= '</label>';
-							$result .= '</li>';
-						}
-						if ( 'yes' === $nyop_enabled ) {
-							$result .= '<li class="it-exchange-nyop-option"><input id="it-exchange-customer-pricing-nyop" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" /><label for="it-exchange-customer-pricing-nyop">' . __( 'Name your own price', 'LION' ) . '</label></li>';
-							$hidden = 'it-exchange-hidden';
-						}
-						$result .= '</ul>';
-						break;
+				if ( 'no' === $nyop_enabled && 1 === count( $price_options ) ) {
 					
+					//Don't display anything, just pretend like the normal base-price is the setting
+					//even though they selected customer-pricing with only one option!
+					
+				} else {
+						
+					switch ( $output_type ) {
+					
+						case 'select':
+							$result .= '<select class="it-exchange-customer-pricing-base-price-selector" name="it_exchange_customer_pricing_base_price_selector">';
+							foreach( $price_options as $price_option ) {
+								$fprice = it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
+								$result .= '<option data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . selected( 'checked', $price_option['default'], false ) . ' >' . $fprice;
+								if ( !empty( $price_option['label'] ) )
+									$result .= ' - ' . $price_option['label'];
+								
+								$result .= '</option>';
+							}
+							if ( 'yes' === $nyop_enabled ) {
+								$result .= '<option value="other">' . __( 'Name your own price', 'LION' ) . '</option>';
+								$hidden = 'it-exchange-hidden';
+							}
+							$result .= '</select>';
+							break;
+	
+						case 'radio':
+						default:
+							$result .= '<ul>';
+							foreach( $price_options as $price_option ) {
+								$fprice = it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
+								$result .= '<li><input id="it-exchange-customer-pricing-' . $fprice . '" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . checked( 'checked', $price_option['default'], false ) . ' /><label for="it-exchange-customer-pricing-' . $fprice . '">' . $fprice;
+								if ( !empty( $price_option['label'] ) )
+									$result .= ' - ' . $price_option['label'];
+								$result .= '</label>';
+								$result .= '</li>';
+							}
+							if ( 'yes' === $nyop_enabled ) {
+								$result .= '<li class="it-exchange-nyop-option"><input id="it-exchange-customer-pricing-nyop" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" /><label for="it-exchange-customer-pricing-nyop">' . __( 'Name your own price', 'LION' ) . '</label></li>';
+								$hidden = 'it-exchange-hidden';
+							}
+							$result .= '</ul>';
+							break;
+						
+					}
+				
 				}
 			
 			}
