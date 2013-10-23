@@ -188,13 +188,14 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 						$result .= '<ul>';
 						foreach( $price_options as $price_option ) {
 							$fprice = it_exchange_format_price( it_exchange_convert_from_database_number( $price_option['price'] ) );
-							$result .= '<li><input class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . checked( 'checked', $price_option['default'], false ) . ' />' . $fprice;
+							$result .= '<li><input id="it-exchange-customer-pricing-' . $fprice . '" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" data-price="' . $fprice . '" value="' . $price_option['price'] . '" ' . checked( 'checked', $price_option['default'], false ) . ' /><label for="it-exchange-customer-pricing-' . $fprice . '">' . $fprice;
 							if ( !empty( $price_option['label'] ) )
 								$result .= ' - ' . $price_option['label'];
+							$result .= '</label>';
 							$result .= '</li>';
 						}
 						if ( 'yes' === $nyop_enabled ) {
-							$result .= '<li class="it-exchange-nyop-option"><input class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" />' . __( 'Name your own price', 'LION' ) . '</li>';
+							$result .= '<li class="it-exchange-nyop-option"><input id="it-exchange-customer-pricing-nyop" class="it-exchange-customer-pricing-base-price-selector" type="radio" name="it_exchange_customer_pricing_base_price_selector" value="other" /><label for="it-exchange-customer-pricing-nyop">' . __( 'Name your own price', 'LION' ) . '</label></li>';
 							$hidden = 'it-exchange-hidden';
 						}
 						$result .= '</ul>';
