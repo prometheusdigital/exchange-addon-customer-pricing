@@ -10,7 +10,7 @@
  *
  * This is set in options array when registering the add-on and called from it_exchange_enable_addon()
  *
- * @since 0.3.6
+ * @since 1.0.0
  * @return void
 */
 function it_exchange_customer_pricing_settings_callback() {
@@ -18,35 +18,49 @@ function it_exchange_customer_pricing_settings_callback() {
 	$IT_Exchange_Customer_Pricing_Add_On->print_settings_page();
 }
 
+/**
+ * Sets the default options for customer pricing settings
+ *
+ * @since 1.0.0
+ * @return array settings
+*/
+function it_exchange_customer_pricing_default_settings( $defaults ) {
+	$defaults['customer-pricing-or-more-label'] = __( 'or more', 'LION' );
+	$defaults['customer-pricing-nyop-label']    = __( 'Name your price!', 'LION' );
+	$defaults['customer-pricing-output-type']   = 'radio';
+	return $defaults;
+}
+add_filter( 'it_storage_get_defaults_exchange_addon_customer_pricing', 'it_exchange_customer_pricing_default_settings' );
+
 class IT_Exchange_Customer_Pricing_Add_On {
 
 	/**
 	 * @var boolean $_is_admin true or false
-	 * @since 0.3.6
+	 * @since 1.0.0
 	*/
 	var $_is_admin;
 
 	/**
 	 * @var string $_current_page Current $_GET['page'] value
-	 * @since 0.3.6
+	 * @since 1.0.0
 	*/
 	var $_current_page;
 
 	/**
 	 * @var string $_current_add_on Current $_GET['add-on-settings'] value
-	 * @since 0.3.6
+	 * @since 1.0.0
 	*/
 	var $_current_add_on;
 
 	/**
 	 * @var string $status_message will be displayed if not empty
-	 * @since 0.3.6
+	 * @since 1.0.0
 	*/
 	var $status_message;
 
 	/**
 	 * @var string $error_message will be displayed if not empty
-	 * @since 0.3.6
+	 * @since 1.0.0
 	*/
 	var $error_message;
 
@@ -54,7 +68,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
  	 * Class constructor
 	 *
 	 * Sets up the class.
-	 * @since 0.3.6
+	 * @since 1.0.0
 	 * @return void
 	*/
 	function IT_Exchange_Customer_Pricing_Add_On() {
@@ -66,8 +80,6 @@ class IT_Exchange_Customer_Pricing_Add_On {
 			add_action( 'it_exchange_save_add_on_settings_customer_pricing', array( $this, 'save_settings' ) );
 			do_action( 'it_exchange_save_add_on_settings_customer_pricing' );
 		}
-
-		add_filter( 'it_storage_get_defaults_exchange_addon_customer_pricing', array( $this, 'set_default_settings' ) );
 	}
 
 	function print_settings_page() {
@@ -135,7 +147,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 	/**
 	 * Save settings
 	 *
-	 * @since 0.3.6
+	 * @since 1.0.0
 	 * @return void
 	*/
 	function save_settings() {
@@ -164,7 +176,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 	 *
 	 * Returns string of errors if anything is invalid
 	 *
-	 * @since 0.3.6
+	 * @since 1.0.0
 	 * @return void
 	*/
 	function get_form_errors( $values ) {
@@ -172,18 +184,5 @@ class IT_Exchange_Customer_Pricing_Add_On {
 		$default_wizard_customer_pricing_settings = apply_filters( 'default_customer_pricing_settings', array( 'customercustomer-pricing-or-more-label', 'customer-pricing-nyop-label', 'customer-pricing-output-type' ) );
 		$errors = array();
 		return $errors;
-	}
-
-	/**
-	 * Sets the default options for manual payment settings
-	 *
-	 * @since 0.3.6
-	 * @return array settings
-	*/
-	function set_default_settings( $defaults ) {
-		$defaults['customer-pricing-or-more-label'] = __( 'or more', 'LION' );
-		$defaults['customer-pricing-nyop-label']    = __( 'Name your price!', 'LION' );
-		$defaults['customer-pricing-output-type']   = 'radio';
-		return $defaults;
 	}
 }
