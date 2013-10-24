@@ -118,7 +118,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
             <p><?php _e( 'Customer Pricing lets customers choose their price from a list of price options you create or let them enter their own price.', 'LION' ); ?></p>
 			<h4><label for="customer-pricing-or-more-label"><?php _e( '"or more" Label', 'LION' ) ?> <span class="tip" title="<?php _e( 'The text that appears next to a price to signify that it has more pricing options.', 'LION' ); ?>">i</span></label></h4>
 			<p> <?php $form->add_text_box( 'customer-pricing-or-more-label' ); ?> </p>
-			<h4><label for="customer-pricing-nyop-label"><?php _e( '"Name your price" Label', 'LION' ) ?> <span class="tip" title="<?php _e( 'The label that appears next to the "name your price" label.', 'LION' ); ?>">i</span></label></h4>
+			<h4><label for="customer-pricing-nyop-label"><?php _e( '"Name your price" Label', 'LION' ) ?> <span class="tip" title="<?php _e( "The label that appears next to the 'name your price' label.", 'LION' ); ?>">i</span></label></h4>
 			<p> <?php $form->add_text_box( 'customer-pricing-nyop-label' ); ?> </p>
             
             <h4><label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'How would you like the price options to display?', 'LION' ); ?>">i</span></label></h4>
