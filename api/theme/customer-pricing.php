@@ -224,7 +224,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 				$result .= '<div class="it-exchange-customer-nyop-section">';
 				$result .= '<input class="it-exchange-customer-pricing-base-price-nyop-input ' . $hidden . '" type="text" name="it_exchange_customer_pricing_base_price_selector" value="" />';
 				if ( empty( $price_options ) )
-					$result .= ' ' . __( 'Name your own price', 'LION' );
+					$result .= ' ' . $options['nyop-label'];
 					
 				$result .= '<p class="it-exchange-customer-pricing-base-price-nyop-description ' . $hidden . '">';
 				if ( !empty( $nyop_min ) && 0 < $nyop_min )
