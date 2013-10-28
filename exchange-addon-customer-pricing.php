@@ -46,15 +46,13 @@ add_action( 'it_exchange_register_addons', 'it_exchange_register_customer_pricin
  * Loads the translation data for WordPress
  *
  * @uses load_plugin_textdomain()
- * @since 1.0.3
+ * @since 1.0.0
  * @return void
 */
-/*
 function it_exchange_customer_pricing_set_textdomain() {
 	load_plugin_textdomain( 'LION', false, dirname( plugin_basename( __FILE__  ) ) . '/lang/' );
 }
 add_action( 'plugins_loaded', 'it_exchange_customer_pricing_set_textdomain' );
-*/
 
 /**
  * Registers Plugin with iThemes updater class
@@ -64,10 +62,8 @@ add_action( 'plugins_loaded', 'it_exchange_customer_pricing_set_textdomain' );
  * @param object $updater ithemes updater object
  * @return void
 */
-/*
 function ithemes_exchange_addon_customer_pricing_updater_register( $updater ) { 
 	    $updater->register( 'exchange-addon-customer-pricing', __FILE__ );
 }
 add_action( 'ithemes_updater_register', 'ithemes_exchange_addon_customer_pricing_updater_register' );
 require( dirname( __FILE__ ) . '/lib/updater/load.php' );
-*/

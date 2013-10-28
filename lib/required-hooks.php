@@ -28,7 +28,7 @@ function it_exchange_customer_pricing_addon_show_version_nag() {
 		<?php
 	}
 }
-//add_action( 'admin_notices', 'it_exchange_customer_pricing_addon_show_version_nag' );
+add_action( 'admin_notices', 'it_exchange_customer_pricing_addon_show_version_nag' );
 
 /**
  * Adds actions to the plugins page for the iThemes Exchange Customer Pricing plugin
