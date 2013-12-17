@@ -38,7 +38,7 @@ function it_exchange_customer_pricing_ajax_format_prices() {
 	
 	if ( !empty( $_POST['max'] ) && 'true' == $_POST['max'] && 0 == $price )
 		die( __( 'No Limit', 'LION' ) );
-	die( it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ) );
+	die( html_entity_decode( it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ), ENT_QUOTES, 'UTF-8' ) );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-format-prices', 'it_exchange_customer_pricing_ajax_format_prices' );
 
@@ -49,7 +49,7 @@ add_action( 'wp_ajax_it-exchange-customer-pricing-format-prices', 'it_exchange_c
  * @since 1.0.0
  * @return string json encoded array with db_price and formated price
 */
-function it_exchange_customre_pricing_ajax_format_nyop_input() {
+function it_exchange_customer_pricing_ajax_format_nyop_input() {
 	$return = '';
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
 		$price = $_POST['input'];
@@ -71,7 +71,7 @@ function it_exchange_customre_pricing_ajax_format_nyop_input() {
 		
 		$return = array( 
 			'db_price' => $price, 
-			'price' => it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ) 
+			'price' => html_entity_decode( it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ), ENT_QUOTES, 'UTF-8' )
 		);
 		
 		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
@@ -80,8 +80,8 @@ function it_exchange_customre_pricing_ajax_format_nyop_input() {
 	}
 	die( json_encode( $return ) );
 }
-add_action( 'wp_ajax_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customre_pricing_ajax_format_nyop_input' );
-add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customre_pricing_ajax_format_nyop_input' );
+add_action( 'wp_ajax_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customer_pricing_ajax_format_nyop_input' );
+add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customer_pricing_ajax_format_nyop_input' );
 /**
  * AJAX function called to update the customer-pricing session data with customer's choice
  *
