@@ -1,6 +1,7 @@
 #it-exchange-product-customer-pricing input[type="text"]{width:100%;}
 #it-exchange-advanced-tabs .it-exchange-customer-pricing-option input{font-size:13px;font-weight:bold;}
 .it-exchange-customer-pricing-option:hover .it-exchange-remove-item{border-color:#BBB;}
+a.it-exchange-remove-item{margin-top:9px;padding-top:2px;}
 #normal-sortables #it-exchange-base-price .customer-pricing-enabled{text-align:left;}
 #base-price-customer-pricing-enabled{position:relative;}
 #base-price-customer-pricing-enabled span{position:absolute;top:33px;right:6px;}
