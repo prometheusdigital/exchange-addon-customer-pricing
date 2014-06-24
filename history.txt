@@ -16,3 +16,6 @@
 	Bug Fix: Licensing on SSL-enabled sites now works properly.
 1.0.6 - 2014-04-07 - Ty Carlson
 	Fix tooltip location on add/edit product page
+1.0.7 - 2014-06-24 - Lew Ayotte
+	Check if on SSL to determine proper schema for WP AJAX call
+	Making Name Your Price input less jerky
