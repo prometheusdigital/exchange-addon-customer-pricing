@@ -132,7 +132,13 @@ add_action( 'admin_print_styles', 'it_exchange_customer_pricing_addon_admin_wp_e
 function it_exchange_customer_pricing_addon_load_public_scripts( $current_view ) {
 	// Frontend Customer Pricing Dashboard CSS & JS
 	wp_enqueue_script( 'it-exchange-customer-pricing-addon-public-js', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/js/customer-pricing.js' ), array( 'jquery' ), false, true );
-	wp_localize_script( 'it-exchange-customer-pricing-addon-public-js', 'it_exchange_customer_pricing_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	
+	if ( is_ssl() )
+		$ajax_url = admin_url( 'admin-ajax.php', 'https' );
+	else
+		$ajax_url = admin_url( 'admin-ajax.php', 'http' );
+	wp_localize_script( 'it-exchange-customer-pricing-addon-public-js', 'it_exchange_customer_pricing_ajax_object', array( 'ajax_url' => $ajax_url ) );
+
 	wp_enqueue_style( 'it-exchange-customer-pricing-addon-public-css', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/styles/customer-pricing.css' ) );
 }
 add_action( 'wp_enqueue_scripts', 'it_exchange_customer_pricing_addon_load_public_scripts' );
@@ -235,7 +241,7 @@ add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_ex
  * @param bool $format Whether or not the price should be formatted 
  * @return string $db_base_price modified, if customer price has been set for product
 */
-function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {
+function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {	
 	if ( $customer_prices = it_exchange_get_session_data( 'customer-prices' ) ) {
 
 		// Use isset incase price is set to 0.00
@@ -278,7 +284,7 @@ function it_exchange_customer_pricing_get_product_feature_base_price( $base_pric
 					}
 				}
 			} else {
-				$base_price = 0;	
+				$base_price = $base_price;	
 			}
 		}
 	}
