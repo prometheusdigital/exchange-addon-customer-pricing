@@ -19,5 +19,5 @@
 1.0.7 - 2014-06-24 - Lew Ayotte
 	Check if on SSL to determine proper schema for WP AJAX call
 	Making Name Your Price input less jerky
-1.0.7 - 2014-07-21 - Lew Ayotte
+1.0.8 - 2014-07-21 - Lew Ayotte
 	Fixing version compare
