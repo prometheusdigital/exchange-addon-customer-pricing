@@ -167,6 +167,8 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			$nyop_max = it_exchange_get_product_feature( $this->product->ID, 'customer-pricing', array( 'setting' => 'nyop_max' ) );
 		
 			$result .= $options['before'];
+			
+			$result .= '<div class="it-exchange-customer-pricing-options">';
 				
 			if ( !empty( $price_options ) ) {
 				
@@ -239,6 +241,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			global $post;
 			$result .= '<input type="hidden" class="it-exchange-customer-pricing-product-id" name="it-exchange-customer-pricing-product-id" value="' . $post->ID . '">';
 
+			$result .= '</div>';
 			$result .= $options['after'];
 
 			return $result;
