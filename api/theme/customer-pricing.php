@@ -110,7 +110,7 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 				}
 			}
 			
-			$price    = empty( $base_price ) ? '<span class="free-label">' . $options['free-label'] . '</span>' : it_exchange_format_price( $base_price );
+			$price    = empty( $base_price ) ? '<span class="free-label">' . $options['free-label'] . '</span>' : apply_filters( 'it_exchange_customer_pricing_product_price', it_exchange_format_price( $base_price ), $this->product->ID );
 			$price    = ( empty( $options['free-label'] ) && empty( $base_price ) ) ? it_exchange_format_price( $base_price ) : $price;
 
 			if ( 'html' == $options['format'] )

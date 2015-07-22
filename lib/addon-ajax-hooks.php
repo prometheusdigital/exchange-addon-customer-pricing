@@ -53,7 +53,7 @@ function it_exchange_customer_pricing_ajax_format_nyop_input() {
 	$return = '';
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
 		$price = $_POST['input'];
-		$price = it_exchange_convert_to_database_number( $price );
+		$db_price = it_exchange_convert_to_database_number( $price );
 		$post_id = $_POST['post_id'];
 		
 		$nyop_min = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
@@ -69,9 +69,11 @@ function it_exchange_customer_pricing_ajax_format_nyop_input() {
 				$price = $nyop_max;
 		}
 		
+		$price = apply_filters( 'it_exchange_customer_pricing_product_price', it_exchange_format_price( it_exchange_convert_from_database_number( $db_price ) ), $post_id );
+		
 		$return = array( 
-			'db_price' => $price, 
-			'price' => html_entity_decode( it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ), ENT_QUOTES, 'UTF-8' )
+			'db_price' => $db_price, 
+			'price' => html_entity_decode( $price, ENT_QUOTES, 'UTF-8' )
 		);
 		
 		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
@@ -89,16 +91,17 @@ add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-format-nyop-input', 'it
  * @return void
 */
 function it_exchange_customer_pricing_session() {
+	$price = 0;
 	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
-		$price = $_POST['input'];
-		$price = $price;
+		$db_price = $_POST['input'];
 		$post_id = $_POST['post_id'];
+		$price = apply_filters( 'it_exchange_customer_pricing_product_price', it_exchange_format_price( it_exchange_convert_from_database_number( $db_price ) ), $post_id );
 		
 		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
-		$customer_prices[$post_id] = $price;
+		$customer_prices[$post_id] = $db_price;
 		it_exchange_update_session_data( 'customer-prices', $customer_prices );
 	}
-	die();
+	die( $price );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-session', 'it_exchange_customer_pricing_session' );
 add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-session', 'it_exchange_customer_pricing_session' );
