@@ -26,3 +26,5 @@
 	Enhancement: Authenticating users now uses the new authentication system.
 1.0.10 - 2014-11-20 - Lew Ayotte
 	Change out .live() calls for .on() calls in JS
+1.1.0 - 2015-07-23 - Lew Ayotte
+	Adding functionality to show recurring payment labels on customer pricing
