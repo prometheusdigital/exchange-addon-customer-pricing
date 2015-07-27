@@ -30,3 +30,5 @@
 	Compatibility Fix: Updated plugin and theme update data format to match changes in WordPress 4.2.
 1.0.12 - 2015-07-14 - Packaging Bot (lib/updater)
 	Enhancement: Updated link to iThemes support.
+1.1.0 - 2015-07-23 - Lew Ayotte
+	Adding functionality to show recurring payment labels on customer pricing
