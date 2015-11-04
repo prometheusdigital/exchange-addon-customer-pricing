@@ -71,7 +71,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 	 * @since 1.0.0
 	 * @return void
 	*/
-	function IT_Exchange_Customer_Pricing_Add_On() {
+	function __construct() {
 		$this->_is_admin       = is_admin();
 		$this->_current_page   = empty( $_GET['page'] ) ? false : $_GET['page'];
 		$this->_current_add_on = empty( $_GET['add-on-settings'] ) ? false : $_GET['add-on-settings'];
@@ -80,6 +80,17 @@ class IT_Exchange_Customer_Pricing_Add_On {
 			add_action( 'it_exchange_save_add_on_settings_customer_pricing', array( $this, 'save_settings' ) );
 			do_action( 'it_exchange_save_add_on_settings_customer_pricing' );
 		}
+	}
+
+	/**
+ 	 * Class deprecated constructor
+	 *
+	 * Sets up the class.
+	 * @since 1.0.0
+	 * @return void
+	*/
+	function IT_Exchange_Customer_Pricing_Add_On() {
+		self::__construct();
 	}
 
 	function print_settings_page() {
