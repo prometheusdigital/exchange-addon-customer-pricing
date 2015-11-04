@@ -32,3 +32,5 @@
 	Enhancement: Updated link to iThemes support.
 1.1.0 - 2015-07-23 - Lew Ayotte
 	Adding functionality to show recurring payment labels on customer pricing
+1.2.0 - 2015-11-04 - Lew Ayotte
+	PHP7 Updates
