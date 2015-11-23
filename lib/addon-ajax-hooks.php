@@ -60,13 +60,13 @@ function it_exchange_customer_pricing_ajax_format_nyop_input() {
 		$nyop_max = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_max' ) );
 		
 		if ( !empty( $nyop_min ) && 0 < $nyop_min ) {
-			if ( $price < $nyop_min )
-				$price = $nyop_min;
+			if ( $db_price < $nyop_min )
+				$db_price = $nyop_min;
 		}
 		
 		if ( !empty( $nyop_max ) && 0 < $nyop_max ) {
-			if ( $price > $nyop_max )
-				$price = $nyop_max;
+			if ( $db_price > $nyop_max )
+				$db_price = $nyop_max;
 		}
 		
 		$price = apply_filters( 'it_exchange_customer_pricing_product_price', it_exchange_format_price( it_exchange_convert_from_database_number( $db_price ) ), $post_id );
