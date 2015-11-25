@@ -104,7 +104,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	 * @return void
 	*/
 	function register_metabox() {
-		add_meta_box( 'it-exchange-product-customer-pricing', __( 'Customer Pricing', 'LION' ), array( $this, 'print_metabox' ), 'it_exchange_prod', 'it_exchange_advanced' );
+		add_meta_box( 'it-exchange-product-customer-pricing', __( 'Customer Pricing', 'LION' ), array( $this, 'print_metabox' ), 'it_exchange_prod', 'normal' );
 	}
 
 	/**
