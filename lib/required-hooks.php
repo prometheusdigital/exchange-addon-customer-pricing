@@ -155,6 +155,22 @@ function it_exchange_customer_pricing_before_print_metabox_base_price( $product 
 add_action( 'it_exchange_before_print_metabox_base_price', 'it_exchange_customer_pricing_before_print_metabox_base_price' );
 
 /**
+ * Output message container to block the sale price field if customer pricing is active.
+ *
+ * @param IT_Exchange_Product $product
+ */
+function it_exchange_customer_pricing_before_print_metabox_sale_price( $product ) {
+
+	$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
+	$hide = ( 'yes' == $enabled ) ? ' hide-if-js' : '';
+
+	$html  = '<div id="sale-price-customer-pricing-disabled" class="base-price-customer-pricing-toggle' . $hide . '">';
+
+	echo $html;
+}
+add_action( 'it_exchange_before_print_metabox_sale_price', 'it_exchange_customer_pricing_before_print_metabox_sale_price' );
+
+/**
  * Replaces default base_price metabox content with customer-pricing metabox content
  *
  * @since 1.0.0
@@ -180,6 +196,34 @@ function it_exchange_customer_pricing_after_print_metabox_base_price( $product )
 	echo $html;
 }
 add_action( 'it_exchange_after_print_metabox_base_price', 'it_exchange_customer_pricing_after_print_metabox_base_price' );
+
+/**
+ * Replaces default sale_price metabox content with customer-pricing metabox content
+ *
+ * @since 1.2.1
+ *
+ * @param object $product iThemes Exchange Product Object
+ * @return void
+ */
+function it_exchange_customer_pricing_after_print_metabox_sale_price( $product ) {
+
+	$description = __( 'Sale Price', 'LION' );
+	$description = apply_filters( 'it_exchange_base-price_addon_metabox_description', $description );
+
+	$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
+	$hide = ( 'no' == $enabled ) ? ' hide-if-js' : '';
+
+	$html  = '</div>'; //ending starting div from it_exchange_customer_pricing_before_print_metabox_base_price
+	$html .= '<div id="sale-price-customer-pricing-enabled" class="base-price-customer-pricing-toggle' . $hide . '">';
+	$html .= '<label for="sale-price">' . esc_html( $description );
+	$html .= '<span class="tip" title="' . __( 'The sale price is disabled for products with Customer Pricing enabled.', 'LION' ) . '">i</span>';
+	$html .= '</label>';
+	$html .= '<input type="text" class="customer-pricing-enabled" value="' . __( 'Custom', 'LION' ) . '" disabled />';
+	$html .= '</div>';
+
+	echo $html;
+}
+add_action( 'it_exchange_after_print_metabox_sale_price', 'it_exchange_customer_pricing_after_print_metabox_sale_price' );
 
 /**
  * Adds Customer Pricing Template Path to iThemes Exchange Template paths
@@ -291,3 +335,24 @@ function it_exchange_customer_pricing_get_product_feature_base_price( $base_pric
 	return $base_price;
 }
 add_filter( 'it_exchange_get_product_feature_base-price', 'it_exchange_customer_pricing_get_product_feature_base_price', 10, 3 );
+
+/**
+ * Disable the product sale if customer pricing is active.
+ *
+ * @since 1.2.1
+ *
+ * @param bool $active
+ * @param IT_Exchange_Product $product
+ *
+ * @return bool
+ */
+function it_exchange_customer_pricing_disable_sale( $active, $product ) {
+
+	if ( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) === 'yes'  ) {
+		$active = false;
+	}
+
+	return $active;
+}
+
+add_filter( 'it_exchange_is_product_sale_active', 'it_exchange_customer_pricing_disable_sale', 10, 2 );
