@@ -328,7 +328,11 @@ function it_exchange_customer_pricing_get_product_feature_base_price( $base_pric
 					}
 				}
 			} else {
-				$base_price = $base_price;	
+				$min = it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
+
+				if ( ! empty( $min ) ) {
+					$base_price = it_exchange_convert_from_database_number( $base_price );
+				}
 			}
 		}
 	}
