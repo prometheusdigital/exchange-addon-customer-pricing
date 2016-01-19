@@ -296,7 +296,7 @@ function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_pric
 		if ( $format ) {
 			$db_base_price = it_exchange_format_price( $db_base_price );
 		}
-	} else {
+	} elseif ( it_exchange_product_has_feature( $product['product_id'], 'customer-pricing' ) ) {
 		$min = it_exchange_get_product_feature( $product['product_id'], 'customer-pricing', array( 'setting' => 'nyop_min' ) );
 
 		if ( ! empty( $min ) ) {
