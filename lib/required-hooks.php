@@ -286,17 +286,28 @@ add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_ex
  * @return string $db_base_price modified, if customer price has been set for product
 */
 function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {	
-	if ( $customer_prices = it_exchange_get_session_data( 'customer-prices' ) ) {
 
-		// Use isset incase price is set to 0.00
-		if ( isset( $customer_prices[$product['product_id']] ) ) {
-			$db_base_price = it_exchange_convert_from_database_number( $customer_prices[$product['product_id']] );
-			
-			if ( $format )
-				$db_base_price = it_exchange_format_price( $db_base_price );
+	$customer_prices = it_exchange_get_session_data( 'customer-prices' );
+
+	// Use isset incase price is set to 0.00
+	if ( is_array( $customer_prices ) && isset( $customer_prices[ $product['product_id'] ] ) ) {
+		$db_base_price = it_exchange_convert_from_database_number( $customer_prices[$product['product_id']] );
+
+		if ( $format ) {
+			$db_base_price = it_exchange_format_price( $db_base_price );
 		}
-		
+	} else {
+		$min = it_exchange_get_product_feature( $product['product_id'], 'customer-pricing', array( 'setting' => 'nyop_min' ) );
+
+		if ( ! empty( $min ) ) {
+			$db_base_price = it_exchange_convert_from_database_number( $min );
+
+			if ( $format ) {
+				$db_base_price = it_exchange_format_price( $db_base_price );
+			}
+		}
 	}
+
 	return $db_base_price;
 }
 add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer_pricing_cart_product_base_price', 10, 3 );
@@ -326,12 +337,6 @@ function it_exchange_customer_pricing_get_product_feature_base_price( $base_pric
 						$base_price = $price;
 						break;
 					}
-				}
-			} else {
-				$min = it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
-
-				if ( ! empty( $min ) ) {
-					$base_price = it_exchange_convert_from_database_number( $base_price );
 				}
 			}
 		}
