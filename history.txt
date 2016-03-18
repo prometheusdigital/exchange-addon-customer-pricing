@@ -34,3 +34,7 @@
 	Adding functionality to show recurring payment labels on customer pricing
 1.2.0 - 2015-11-04 - Lew Ayotte
 	PHP7 Updates
+1.3.0 - 2015-11-30 - Timothy Jacobs, Lew Ayotte
+	Move metabox to the normal advanced section
+	Disable the Sales API if the product has customer pricing
+	Enforce min and max price for customer pricing Resolves #1346.
