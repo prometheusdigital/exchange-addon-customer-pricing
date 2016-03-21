@@ -234,8 +234,16 @@ class IT_Theme_API_Customer_Pricing implements IT_Theme_API {
 			}
 			
 			if ( 'yes' === $nyop_enabled ) {
+				
+				$settings = it_exchange_get_option( 'settings_general' );
+				$currency = it_exchange_get_currency_symbol( $settings['default-currency'] );
+				$position = $settings['currency-symbol-position'];
+				$thousands = $settings['currency-thousands-separator'];
+				$decimals = $settings['currency-decimals-separator'];
+				
 				$result .= '<div class="it-exchange-customer-nyop-section">';
-				$result .= '<input class="it-exchange-customer-pricing-base-price-nyop-input ' . $hidden . '" type="text" name="it_exchange_customer_pricing_base_price_selector" value="" />';
+				$result .= "<input class=\"it-exchange-customer-pricing-base-price-nyop-input $hidden\" type=\"text\" name=\"it_exchange_customer_pricing_base_price_selector\" 
+							data-position='$position' data-symbol='$currency' data-thousands='$thousands' data-decimals='$decimals' />";
 				if ( empty( $price_options ) )
 					$result .= ' ' . $options['nyop-label'];
 					

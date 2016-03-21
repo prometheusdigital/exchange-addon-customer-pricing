@@ -137,7 +137,10 @@ function it_exchange_customer_pricing_addon_load_public_scripts( $current_view )
 		$ajax_url = admin_url( 'admin-ajax.php', 'https' );
 	else
 		$ajax_url = admin_url( 'admin-ajax.php', 'http' );
-	wp_localize_script( 'it-exchange-customer-pricing-addon-public-js', 'it_exchange_customer_pricing_ajax_object', array( 'ajax_url' => $ajax_url ) );
+	wp_localize_script( 'it-exchange-customer-pricing-addon-public-js', 'it_exchange_customer_pricing_ajax_object', array(
+		'ajax_url' => $ajax_url,
+		'timer'    => apply_filters( 'it_exchange_customer_pricing_nyop_refresh_time', 500 )
+	) );
 
 	wp_enqueue_style( 'it-exchange-customer-pricing-addon-public-css', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/styles/customer-pricing.css' ) );
 }
