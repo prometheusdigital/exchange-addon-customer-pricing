@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: iThemes Exchange - Customer Pricing Add-on
- * Version: 1.3.0
+ * Version: 1.3.1
  * Description: Adds the customer pricing to iThemes Exchange
  * Plugin URI: http://ithemes.com/exchange/customer-pricing/
  * Author: iThemes
