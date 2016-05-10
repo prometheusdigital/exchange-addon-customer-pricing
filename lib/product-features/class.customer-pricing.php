@@ -52,7 +52,9 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		// Add it to all enabled product-type addons
 		$products = it_exchange_get_enabled_addons( array( 'category' => 'product-type' ) );
 		foreach( $products as $key => $params ) {
-			it_exchange_add_feature_support_to_product_type( 'customer-pricing', $params['slug'] );
+			if ( $params['slug'] !== 'invoices-product-type' ) {
+				it_exchange_add_feature_support_to_product_type( 'customer-pricing', $params['slug'] );
+			}
 		}
 	}
 
