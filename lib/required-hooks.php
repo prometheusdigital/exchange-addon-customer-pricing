@@ -283,25 +283,35 @@ add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_ex
  *
  * @since 1.0.0
  *
- * @param string $db_base_price default Base Price
- * @param array $product iThemes Exchange Product
- * @param bool $format Whether or not the price should be formatted 
- * @return string $db_base_price modified, if customer price has been set for product
+ * @param string|float $db_base_price default Base Price
+ * @param array        $product iThemes Exchange Product
+ * @param bool         $format Whether or not the price should be formatted
+ *
+ * @return string|float Modified base price if customer pricing is set for the product.
 */
-function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {	
-	if ( $customer_prices = it_exchange_get_session_data( 'customer-prices' ) ) {
+function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {
 
-		// Use isset incase price is set to 0.00
-		if ( isset( $customer_prices[$product['product_id']] ) ) {
-			$db_base_price = it_exchange_convert_from_database_number( $customer_prices[$product['product_id']] );
-			
-			if ( $format )
-				$db_base_price = it_exchange_format_price( $db_base_price );
-		}
-		
-	}
-	return $db_base_price;
+    $customer_prices = it_exchange_get_session_data( 'customer-prices' );
+
+	if ( ! $customer_prices ) {
+	    return $db_base_price;
+    }
+
+	// Use isset in case price is set to 0.00
+    if ( ! isset( $customer_prices[ $product['product_id'] ] ) ) {
+	    return $db_base_price;
+    }
+
+    $base_price = it_exchange_convert_from_database_number( $customer_prices[ $product['product_id'] ] );
+	$base_price = it_exchange_is_customer_pricing_product_selected_price_valid( $base_price, $product['product_id'], true );
+
+	if ( $base_price !== false ) {
+	    $db_base_price = $base_price;
+    }
+
+	return $format ? it_exchange_format_price( $db_base_price ) : $db_base_price;
 }
+
 add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer_pricing_cart_product_base_price', 10, 3 );
 
 /**
@@ -310,33 +320,24 @@ add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer
  *
  * @since 1.0.0
  *
- * @param string $base_price default Base Price
+ * @param float $_ default Base Price
  * @param int $product_id iThemes Exchange Product ID
  * @param array $options Any options being passed through function 
- * @return string $base_price modified, if  customer pricing has been enabled for product
+ * @return float $base_price modified, if  customer pricing has been enabled for product
 */
-function it_exchange_customer_pricing_get_product_feature_base_price( $base_price, $product_id, $options ) {
-	if ( it_exchange_product_has_feature( $product_id, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
-		if ( 'yes' === $enabled = it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
-			$price_options = it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'pricing-options' ) );
-			if ( !empty( $price_options ) ) {
-				foreach( $price_options as $price_option ) {
-					$db_price = $price_option['price'];
-					$price = it_exchange_convert_from_database_number( $price_option['price'] );
-					if ( 0 == $base_price || $price < $base_price )
-						$base_price = $price;
-					if ( 'checked' === $price_option['default'] ) {
-						$base_price = $price;
-						break;
-					}
-				}
-			} else {
-				$base_price = $base_price;	
-			}
-		}
-	}
-	return $base_price;
+function it_exchange_customer_pricing_get_product_feature_base_price( $_, $product_id, $options ) {
+
+    remove_filter( 'it_exchange_get_product_feature_base-price', __FUNCTION__ );
+    $base_price = it_exchange_get_product_default_customer_price( $product_id );
+	add_filter( 'it_exchange_get_product_feature_base-price', __FUNCTION__, 10, 3 );
+
+	if ( $base_price === false ) {
+	    return $_;
+    }
+
+   return $base_price;
 }
+
 add_filter( 'it_exchange_get_product_feature_base-price', 'it_exchange_customer_pricing_get_product_feature_base_price', 10, 3 );
 
 /**
@@ -351,7 +352,7 @@ add_filter( 'it_exchange_get_product_feature_base-price', 'it_exchange_customer_
  */
 function it_exchange_customer_pricing_disable_sale( $active, $product ) {
 
-	if ( it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) === 'yes'  ) {
+	if ( $product->get_feature( 'customer-pricing', array( 'setting' => 'enabled' ) ) === 'yes'  ) {
 		$active = false;
 	}
 

@@ -38,7 +38,8 @@ function it_exchange_customer_pricing_ajax_format_prices() {
 	
 	if ( !empty( $_POST['max'] ) && 'true' == $_POST['max'] && 0 == $price )
 		die( __( 'No Limit', 'LION' ) );
-	die( html_entity_decode( it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ), ENT_QUOTES, 'UTF-8' ) );
+
+	die( esc_html( it_exchange_format_price( it_exchange_convert_from_database_number( $price ) ) ) );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-format-prices', 'it_exchange_customer_pricing_ajax_format_prices' );
 
@@ -51,57 +52,69 @@ add_action( 'wp_ajax_it-exchange-customer-pricing-format-prices', 'it_exchange_c
 */
 function it_exchange_customer_pricing_ajax_format_nyop_input() {
 	$return = '';
-	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
-		$price = $_POST['input'];
-		$db_price = it_exchange_convert_to_database_number( $price );
-		$post_id = $_POST['post_id'];
-		
-		$nyop_min = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_min' ) );
-		$nyop_max = it_exchange_get_product_feature( $post_id, 'customer-pricing', array( 'setting' => 'nyop_max' ) );
-		
-		if ( !empty( $nyop_min ) && 0 < $nyop_min ) {
-			if ( $db_price < $nyop_min )
-				$db_price = $nyop_min;
-		}
-		
-		if ( !empty( $nyop_max ) && 0 < $nyop_max ) {
-			if ( $db_price > $nyop_max )
-				$db_price = $nyop_max;
-		}
-		
-		$price = apply_filters( 'it_exchange_customer_pricing_product_price', it_exchange_format_price( it_exchange_convert_from_database_number( $db_price ) ), $post_id );
-		
-		$return = array( 
-			'db_price' => $db_price, 
-			'price' => html_entity_decode( $price, ENT_QUOTES, 'UTF-8' )
-		);
-		
-		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
-		$customer_prices[$post_id] = $return['db_price'];
-		it_exchange_update_session_data( 'customer-prices', $customer_prices );
+
+	if ( ! isset( $_POST['input'] ) || empty( $_POST['post_id'] ) ) {
+		die( json_encode( $return ) );
 	}
+
+	$post_id = $_POST['post_id'];
+	$price   = it_exchange_convert_from_database_number( it_exchange_convert_to_database_number( $_POST['input'] ) );
+	$price   = it_exchange_is_customer_pricing_product_selected_price_valid( $price, $post_id, true );
+
+	$formatted = it_exchange_format_price( $price );
+
+	/**
+	 * Filter the selected price for a product.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $formatted
+	 * @param int    $post_id
+	 */
+	$formatted = apply_filters( 'it_exchange_customer_pricing_product_price', $formatted, $post_id );
+
+	$return = array(
+		'db_price' => it_exchange_convert_to_database_number( $price ),
+		'price'    => esc_html( $formatted ),
+	);
+
+	$customer_prices = (array) it_exchange_get_session_data( 'customer-prices' );
+	$customer_prices[$post_id] = $return['db_price'];
+	it_exchange_update_session_data( 'customer-prices', $customer_prices );
+
 	die( json_encode( $return ) );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customer_pricing_ajax_format_nyop_input' );
 add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customer_pricing_ajax_format_nyop_input' );
+
 /**
  * AJAX function called to update the customer-pricing session data with customer's choice
  *
  * @since 1.0.0
+ *
  * @return void
 */
 function it_exchange_customer_pricing_session() {
 	$price = 0;
-	if ( isset( $_POST['input'] ) && !empty( $_POST['post_id'] ) ) {
-		$db_price = $_POST['input'];
-		$post_id = $_POST['post_id'];
-		$price = apply_filters( 'it_exchange_customer_pricing_product_price', it_exchange_format_price( it_exchange_convert_from_database_number( $db_price ) ), $post_id );
-		
-		$customer_prices = (array)it_exchange_get_session_data( 'customer-prices' );
-		$customer_prices[$post_id] = $db_price;
-		it_exchange_update_session_data( 'customer-prices', $customer_prices );
+
+	if ( ! isset( $_POST['input'] ) || empty( $_POST['post_id'] ) ) {
+		die( $price );
 	}
-	die( $price );
+
+	$post_id  = $_POST['post_id'];
+	$price    = it_exchange_convert_from_database_number( $_POST['input'] );
+	$price    = it_exchange_is_customer_pricing_product_selected_price_valid( $price, $post_id, true );
+
+	$formatted = it_exchange_format_price( $price );
+
+	// This filter is documented in lib/addon-ajax-hooks.php
+	$formatted = apply_filters( 'it_exchange_customer_pricing_product_price', $formatted, $post_id );
+
+	$customer_prices = (array) it_exchange_get_session_data( 'customer-prices' );
+	$customer_prices[$post_id] = it_exchange_convert_to_database_number( $price );
+	it_exchange_update_session_data( 'customer-prices', $customer_prices );
+
+	die( $formatted );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-session', 'it_exchange_customer_pricing_session' );
 add_action( 'wp_ajax_nopriv_it-exchange-customer-pricing-session', 'it_exchange_customer_pricing_session' );
