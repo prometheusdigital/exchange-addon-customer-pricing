@@ -95,6 +95,16 @@ function it_exchange_is_customer_pricing_product_selected_price_valid( $price, $
 		return $coerce ? $default : false;
 	}
 
+	$price_options = $product->get_feature( 'customer-pricing', array( 'setting' => 'pricing-options' ) );
+
+	if ( ! empty( $price_options ) && is_array( $price_options ) ) {
+		foreach ( $price_options as $price_option ) {
+			if ( (float) it_exchange_convert_from_database_number( $price_option['price'] ) === $price ) {
+				return $coerce ? $price : true;
+			}
+		}
+	}
+
 	if ( $product->get_feature( 'customer-pricing', array( 'setting' => 'nyop_enabled' ) ) === 'yes' ) {
 		$min = (float) it_exchange_convert_from_database_number(
 			$product->get_feature( 'customer-pricing', array( 'setting' => 'nyop_min' ) )
@@ -121,18 +131,6 @@ function it_exchange_is_customer_pricing_product_selected_price_valid( $price, $
 			} else {
 				return false;
 			}
-		}
-	}
-
-	$price_options = $product->get_feature( 'customer-pricing', array( 'setting' => 'pricing-options' ) );
-
-	if ( empty( $price_options ) || ! is_array( $price_options ) ) {
-		return $coerce ? $default : $default === $price;
-	}
-
-	foreach ( $price_options as $price_option ) {
-		if ( (float) it_exchange_convert_from_database_number( $price_option['price'] ) === $price ) {
-			return $coerce ? $price : true;
 		}
 	}
 
