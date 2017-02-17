@@ -320,19 +320,19 @@ add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer
  *
  * @since 1.0.0
  *
- * @param float $_ default Base Price
+ * @param float $default default Base Price
  * @param int $product_id iThemes Exchange Product ID
  * @param array $options Any options being passed through function 
  * @return float $base_price modified, if  customer pricing has been enabled for product
 */
-function it_exchange_customer_pricing_get_product_feature_base_price( $_, $product_id, $options ) {
+function it_exchange_customer_pricing_get_product_feature_base_price( $default, $product_id, $options ) {
 
     remove_filter( 'it_exchange_get_product_feature_base-price', __FUNCTION__ );
     $base_price = it_exchange_get_product_default_customer_price( $product_id );
 	add_filter( 'it_exchange_get_product_feature_base-price', __FUNCTION__, 10, 3 );
 
 	if ( $base_price === false ) {
-	    return $_;
+	    return $default;
     }
 
    return $base_price;
