@@ -78,10 +78,6 @@ function it_exchange_customer_pricing_ajax_format_nyop_input() {
 		'price'    => esc_html( $formatted ),
 	);
 
-	$customer_prices = (array) it_exchange_get_session_data( 'customer-prices' );
-	$customer_prices[$post_id] = $return['db_price'];
-	it_exchange_update_session_data( 'customer-prices', $customer_prices );
-
 	die( json_encode( $return ) );
 }
 add_action( 'wp_ajax_it-exchange-customer-pricing-format-nyop-input', 'it_exchange_customer_pricing_ajax_format_nyop_input' );
@@ -109,10 +105,6 @@ function it_exchange_customer_pricing_session() {
 
 	// This filter is documented in lib/addon-ajax-hooks.php
 	$formatted = apply_filters( 'it_exchange_customer_pricing_product_price', $formatted, $post_id );
-
-	$customer_prices = (array) it_exchange_get_session_data( 'customer-prices' );
-	$customer_prices[$post_id] = it_exchange_convert_to_database_number( $price );
-	it_exchange_update_session_data( 'customer-prices', $customer_prices );
 
 	die( $formatted );
 }

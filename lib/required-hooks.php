@@ -283,26 +283,21 @@ add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_ex
  *
  * @since 1.0.0
  *
- * @param string|float $db_base_price default Base Price
- * @param array        $product iThemes Exchange Product
- * @param bool         $format Whether or not the price should be formatted
+ * @param string|float     $db_base_price default Base Price
+ * @param array            $product       iThemes Exchange Product
+ * @param bool             $format        Whether or not the price should be formatted
+ * @param ITE_Cart_Product $item
  *
- * @return string|float Modified base price if customer pricing is set for the product.
-*/
-function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format ) {
+ * @return float|string Modified base price if customer pricing is set for the product.
+ */
+function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_price, $product, $format, $item ) {
 
-    $customer_prices = it_exchange_get_session_data( 'customer-prices' );
-
-	if ( ! $customer_prices ) {
+    if ( ! $item->has_itemized_data( 'customer_price' ) ) {
 	    return $db_base_price;
     }
 
-	// Use isset in case price is set to 0.00
-    if ( ! isset( $customer_prices[ $product['product_id'] ] ) ) {
-	    return $db_base_price;
-    }
-
-    $base_price = it_exchange_convert_from_database_number( $customer_prices[ $product['product_id'] ] );
+    $data       = $item->get_itemized_data( 'customer_price' );
+    $base_price = $data['price'];
 	$base_price = it_exchange_is_customer_pricing_product_selected_price_valid( $base_price, $product['product_id'], true );
 
 	if ( $base_price !== false ) {
@@ -312,7 +307,7 @@ function it_exchange_get_customer_pricing_cart_product_base_price( $db_base_pric
 	return $format ? it_exchange_format_price( $db_base_price ) : $db_base_price;
 }
 
-add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer_pricing_cart_product_base_price', 10, 3 );
+add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer_pricing_cart_product_base_price', 10, 4 );
 
 /**
  * Replaces base-price with default customer-pricing setting on Products page in WP Dashboard
@@ -360,3 +355,85 @@ function it_exchange_customer_pricing_disable_sale( $active, $product ) {
 }
 
 add_filter( 'it_exchange_is_product_sale_active', 'it_exchange_customer_pricing_disable_sale', 10, 2 );
+
+/**
+ * Add itemized data containing the selected price.
+ *
+ * @since 2.0.0
+ *
+ * @param array $itemized
+ * @param int   $product_id
+ *
+ * @return array
+ */
+function it_exchange_customer_pricing_add_itemized_data( $itemized, $product_id ) {
+
+    if ( isset( $_REQUEST['customer_price'] ) ) {
+        $price = $_REQUEST['customer_price'];
+        $price = it_exchange_convert_from_database_number( it_exchange_convert_to_database_number( $price ) );
+        $price = it_exchange_is_customer_pricing_product_selected_price_valid( $price, $product_id, true );
+
+        $itemized['customer_price'] = array(
+            'price' => $price,
+            'label' => it_exchange_get_customer_pricing_selected_price_label( $price, $product_id ),
+        );
+    }
+
+    return $itemized;
+}
+
+add_filter( 'it_exchange_add_itemized_data_to_cart_product', 'it_exchange_customer_pricing_add_itemized_data', 10, 2 );
+
+/**
+ * Override the cart product label to include the selected price option.
+ *
+ * @since 2.0.0
+ *
+ * @param string           $title
+ * @param array            $_
+ * @param ITE_Cart_Product $item
+ *
+ * @return string
+ */
+function it_exchange_customer_pricing_override_cart_product_label( $title, $_, $item ) {
+
+    if ( ! $item->has_itemized_data( 'customer_price' ) ) {
+        return $title;
+    }
+
+    $data = $item->get_itemized_data( 'customer_price' );
+
+    if ( empty( $data['label'] ) ) {
+        return $title;
+    }
+
+    $title .= " - {$data['label']}";
+
+    return $title;
+}
+
+add_filter( 'it_exchange_get_cart_product_title', 'it_exchange_customer_pricing_override_cart_product_label', 10, 3 );
+
+/**
+ * Allows multiple customer pricing products to be added to the cart.
+ *
+ * @since 2.0.0
+ *
+ * @param bool $in_cart incoming from filter
+ * @param int  $product_id the product id of the current page
+ *
+ * @return bool
+ */
+function it_exchange_addon_customer_pricing_modify_is_current_product_in_cart( $in_cart, $product_id ) {
+
+	if ( ! $in_cart ) {
+		return false;
+	}
+
+	if ( it_exchange_product_has_feature( $product_id, 'customer-pricing' ) ) {
+		return false;
+	}
+
+	return $in_cart;
+}
+add_filter( 'it_exchange_is_current_product_in_cart', 'it_exchange_addon_customer_pricing_modify_is_current_product_in_cart', 10, 2 );

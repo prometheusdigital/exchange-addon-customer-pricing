@@ -138,6 +138,48 @@ function it_exchange_is_customer_pricing_product_selected_price_valid( $price, $
 }
 
 /**
+ * Get the label for a given customer price.
+ *
+ * @since 2.0.0
+ *
+ * @param float                   $price
+ * @param int|IT_Exchange_Product $product
+ *
+ * @return string|false
+ */
+function it_exchange_get_customer_pricing_selected_price_label( $price, $product ) {
+
+	$product = it_exchange_get_product( $product );
+
+	if ( ! it_exchange_is_customer_pricing_product_selected_price_valid( $price, $product ) ) {
+		return false;
+	}
+
+	$price_options = $product->get_feature( 'customer-pricing', array( 'setting' => 'pricing-options' ) );
+	$label         = __( 'Custom', 'LION' );
+
+	if ( ! empty( $price_options ) && is_array( $price_options ) ) {
+		foreach ( $price_options as $price_option ) {
+			if ( (float) it_exchange_convert_from_database_number( $price_option['price'] ) === $price ) {
+				$label = $price_option['label'];
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Filter the selected price label.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string              $label
+	 * @param float               $price
+	 * @param IT_Exchange_Product $product
+	 */
+	return apply_filters( 'it_exchange_get_customer_pricing_selected_price_label', $label, $price, $product );
+}
+
+/**
  * Get the default customer price for a product.
  *
  * @since 1.3.3
