@@ -42,3 +42,5 @@
 	Tweak: UX Improvements to name your own price
 1.3.2 - 2016-05-12 - Timothy Jacobs
 	Tweak: Disable customer pricing metabox on Invoices
+1.3.3 - 2017-02-20 - Timothy Jacobs
+	Security: Validate selected customer price to be a valid option.
