@@ -1,6 +1,6 @@
 <?php
 /**
- * iThemes Exchange Customer_Pricing Add-on
+ * ExchangeWP Customer_Pricing Add-on
  * @package IT_Exchange_Addon_Customer_Pricing
  * @since 1.0.0
 */
@@ -95,7 +95,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 
 	function print_settings_page() {
 		$settings = it_exchange_get_option( 'addon_customer_pricing', true );
-	
+
 		$form_values  = empty( $this->error_message ) ? $settings : ITForm::get_post_data();
 		$form_options = array(
 			'id'      => apply_filters( 'it_exchange_add_on_customer_pricing', 'it-exchange-add-on-customer-pricing-settings' ),
@@ -136,16 +136,16 @@ class IT_Exchange_Customer_Pricing_Add_On {
 			foreach ( $settings as $key => $var )
 				$form->set_option( $key, $var );
 		?>
-        
+
         <div class="it-exchange-addon-settings it-exchange-customer-pricing-addon-settings">
             <p><?php _e( 'Customer Pricing lets customers choose their price from a list of price options you create or let them enter their own price.', 'LION' ); ?></p>
 			<h4><label for="customer-pricing-or-more-label"><?php _e( '"or more" Label', 'LION' ) ?> <span class="tip" title="<?php _e( 'The text that appears next to a price to signify that it has more pricing options.', 'LION' ); ?>">i</span></label></h4>
 			<p> <?php $form->add_text_box( 'customer-pricing-or-more-label' ); ?> </p>
 			<h4><label for="customer-pricing-nyop-label"><?php _e( '"Name your price" Label', 'LION' ) ?> <span class="tip" title="<?php _e( "The label that appears next to the 'name your price' label.", 'LION' ); ?>">i</span></label></h4>
 			<p> <?php $form->add_text_box( 'customer-pricing-nyop-label' ); ?> </p>
-            
+
             <h4><label for="it-exchange-customer-pricing-output-type"><?php _e( 'Price selection type', 'LION' ); ?> <span class="tip" title="<?php _e( 'How would you like the price options to display?', 'LION' ); ?>">i</span></label></h4>
-			<p> <?php 
+			<p> <?php
 			$output_types = apply_filters( 'it-exchange-customer-pricing-output-types', array(
 				'radio' => __( 'Radio', 'LION' ),
 				'select' => __( 'Drop Down', 'LION' ),
@@ -191,7 +191,7 @@ class IT_Exchange_Customer_Pricing_Add_On {
 	 * @return void
 	*/
 	function get_form_errors( $values ) {
-		
+
 		$default_wizard_customer_pricing_settings = apply_filters( 'default_customer_pricing_settings', array( 'customercustomer-pricing-or-more-label', 'customer-pricing-nyop-label', 'customer-pricing-output-type' ) );
 		$errors = array();
 		return $errors;
