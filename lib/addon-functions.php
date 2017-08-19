@@ -1,6 +1,6 @@
 <?php
 /**
- * iThemes Exchange Customer Pricing Add-on
+ * ExchangeWP Customer Pricing Add-on
  *
  * @package IT_Exchange_Addon_Customer_Pricing
  * @since   1.0.0

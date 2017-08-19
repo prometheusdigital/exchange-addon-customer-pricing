@@ -1,6 +1,6 @@
 <?php
 /**
- * iThemes Exchange Customer Pricing Add-on
+ * ExchangeWP Customer Pricing Add-on
  * @package IT_Exchange_Addon_Customer_Pricing
  * @since 1.0.0
 */
@@ -35,7 +35,7 @@ function it_exchange_customer_pricing_ajax_format_prices() {
 	$price = 0;
 	if ( isset( $_POST['price'] ) )
 		$price = it_exchange_convert_to_database_number( $_POST['price'] );
-	
+
 	if ( !empty( $_POST['max'] ) && 'true' == $_POST['max'] && 0 == $price )
 		die( __( 'No Limit', 'LION' ) );
 

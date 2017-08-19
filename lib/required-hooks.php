@@ -1,6 +1,6 @@
 <?php
 /**
- * iThemes Exchange Customer Pricing Add-on
+ * ExchangeWP Customer Pricing Add-on
  * @package IT_Exchange_Addon_Customer_Pricing
  * @since 1.0.0
 */
@@ -16,7 +16,7 @@ function it_exchange_customer_pricing_addon_show_version_nag() {
 	if ( version_compare( $GLOBALS['it_exchange']['version'], '1.5.0', '<' ) ) {
 		?>
 		<div id="it-exchange-add-on-min-version-nag" class="it-exchange-nag">
-			<?php printf( __( 'The Customer Pricing add-on requires iThemes Exchange version 1.5.0 or greater. %sPlease upgrade Exchange%s.', 'LION' ), '<a href="' . admin_url( 'update-core.php' ) . '">', '</a>' ); ?>
+			<?php printf( __( 'The Customer Pricing add-on requires ExchangeWP version 1.5.0 or greater. %sPlease upgrade Exchange%s.', 'LION' ), '<a href="' . admin_url( 'update-core.php' ) . '">', '</a>' ); ?>
 		</div>
 		<script type="text/javascript">
 			jQuery( document ).ready( function() {
@@ -31,22 +31,22 @@ function it_exchange_customer_pricing_addon_show_version_nag() {
 add_action( 'admin_notices', 'it_exchange_customer_pricing_addon_show_version_nag' );
 
 /**
- * Adds actions to the plugins page for the iThemes Exchange Customer Pricing plugin
+ * Adds actions to the plugins page for the ExchangeWP Customer Pricing plugin
  *
  * @since 1.0.0
  *
  * @param array $meta Existing meta
  * @param string $plugin_file the wp plugin slug (path)
  * @param array $plugin_data the data WP harvested from the plugin header
- * @param string $context 
+ * @param string $context
  * @return array
 */
 function it_exchange_customer_pricing_plugin_row_actions( $actions, $plugin_file, $plugin_data, $context ) {
-	
+
 	$actions['setup_addon'] = '<a href="' . get_admin_url( NULL, 'admin.php?page=it-exchange-addons&add-on-settings=customer-pricing' ) . '">' . __( 'Setup Add-on', 'LION' ) . '</a>';
-	
+
 	return $actions;
-	
+
 }
 add_filter( 'plugin_action_links_exchange-addon-customer-pricing/exchange-addon-customer-pricing.php', 'it_exchange_customer_pricing_plugin_row_actions', 10, 4 );
 
@@ -60,7 +60,7 @@ add_filter( 'plugin_action_links_exchange-addon-customer-pricing/exchange-addon-
 */
 function it_exchange_customer_pricing_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 	global $post;
-	
+
 	if ( isset( $_REQUEST['post_type'] ) ) {
 		$post_type = $_REQUEST['post_type'];
 	} else {
@@ -77,7 +77,7 @@ function it_exchange_customer_pricing_addon_admin_wp_enqueue_scripts( $hook_suff
 		if ( isset( $post ) && !empty( $post ) )
 			$post_type = $post->post_type;
 	}
-	
+
 	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type ) {
 		$deps = array( 'post', 'jquery-ui-sortable', 'jquery-ui-droppable', 'jquery-ui-tabs', 'jquery-ui-tooltip', 'jquery-ui-datepicker', 'autosave' );
 		wp_enqueue_script( 'it-exchange-customer-pricing-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/admin/js/add-edit-product.js', $deps );
@@ -132,7 +132,7 @@ add_action( 'admin_print_styles', 'it_exchange_customer_pricing_addon_admin_wp_e
 function it_exchange_customer_pricing_addon_load_public_scripts( $current_view ) {
 	// Frontend Customer Pricing Dashboard CSS & JS
 	wp_enqueue_script( 'it-exchange-customer-pricing-addon-public-js', ITUtility::get_url_from_file( dirname( __FILE__ ) . '/assets/js/customer-pricing.js' ), array( 'jquery' ), false, true );
-	
+
 	if ( is_ssl() )
 		$ajax_url = admin_url( 'admin-ajax.php', 'https' );
 	else
@@ -147,12 +147,12 @@ function it_exchange_customer_pricing_addon_load_public_scripts( $current_view )
 add_action( 'wp_enqueue_scripts', 'it_exchange_customer_pricing_addon_load_public_scripts' );
 
 function it_exchange_customer_pricing_before_print_metabox_base_price( $product ) {
-	
+
 	$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
 	$hide = ( 'yes' == $enabled ) ? ' hide-if-js' : '';
 
 	$html  = '<div id="base-price-customer-pricing-disabled" class="base-price-customer-pricing-toggle' . $hide . '">';
-	
+
 	echo $html;
 }
 add_action( 'it_exchange_before_print_metabox_base_price', 'it_exchange_customer_pricing_before_print_metabox_base_price' );
@@ -178,24 +178,24 @@ add_action( 'it_exchange_before_print_metabox_sale_price', 'it_exchange_customer
  *
  * @since 1.0.0
  *
- * @param object $product iThemes Exchange Product Object
+ * @param object $product ExchangeWP Product Object
  * @return void
 */
 function it_exchange_customer_pricing_after_print_metabox_base_price( $product ) {
 	$description = __( 'Price', 'LION' );
 	$description = apply_filters( 'it_exchange_base-price_addon_metabox_description', $description );
-	
+
 	$enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) );
 	$hide = ( 'no' == $enabled ) ? ' hide-if-js' : '';
-	
+
 	$html  = '</div>'; //ending starting div from it_exchange_customer_pricing_before_print_metabox_base_price
-	$html .= '<div id="base-price-customer-pricing-enabled" class="base-price-customer-pricing-toggle' . $hide . '">';	
+	$html .= '<div id="base-price-customer-pricing-enabled" class="base-price-customer-pricing-toggle' . $hide . '">';
 	$html .= '<label for="base-price">' . esc_html( $description );
 	$html .= '<span class="tip" title="' . __( 'To change the price of this product, go the Customer Pricing in the Advanced Options section.', 'LION' ) . '">i</span>';
 	$html .= '</label>';
 	$html .= '<input type="text" class="customer-pricing-enabled" value="' . __( 'Custom', 'LION' ) . '" disabled />';
 	$html .= '</div>';
-	
+
 	echo $html;
 }
 add_action( 'it_exchange_after_print_metabox_base_price', 'it_exchange_customer_pricing_after_print_metabox_base_price' );
@@ -205,7 +205,7 @@ add_action( 'it_exchange_after_print_metabox_base_price', 'it_exchange_customer_
  *
  * @since 1.2.1
  *
- * @param object $product iThemes Exchange Product Object
+ * @param object $product ExchangeWP Product Object
  * @return void
  */
 function it_exchange_customer_pricing_after_print_metabox_sale_price( $product ) {
@@ -229,10 +229,10 @@ function it_exchange_customer_pricing_after_print_metabox_sale_price( $product )
 add_action( 'it_exchange_after_print_metabox_sale_price', 'it_exchange_customer_pricing_after_print_metabox_sale_price' );
 
 /**
- * Adds Customer Pricing Template Path to iThemes Exchange Template paths
+ * Adds Customer Pricing Template Path to ExchangeWP Template paths
  *
  * @since 1.0.0
- * @param array $possible_template_paths iThemes Exchange existing Template paths array
+ * @param array $possible_template_paths ExchangeWP existing Template paths array
  * @param array $template_names
  * @return array
 */
@@ -244,11 +244,11 @@ add_filter( 'it_exchange_possible_template_paths', 'it_exchange_customer_pricing
 
 function it_exchange_customer_pricing_store_product_product_info_loop_elements( $parts ) {
 	$product = $GLOBALS['it_exchange']['product'];
-	
+
 	if ( false !== $key = array_search( 'base-price', $parts ) ) {
 		if ( it_exchange_product_has_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
 			if ( 'yes' === $enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
-				$parts[$key] = 'customer-pricing';	
+				$parts[$key] = 'customer-pricing';
 			}
 		}
 	}
@@ -266,11 +266,11 @@ add_filter( 'it_exchange_get_store_product_product_info_loop_elements', 'it_exch
 */
 function it_exchange_customer_pricing_content_product_product_info_loop_elements( $parts ) {
 	$product = $GLOBALS['it_exchange']['product'];
-	
+
 	if ( false !== $key = array_search( 'base-price', $parts ) ) {
 		if ( it_exchange_product_has_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
 			if ( 'yes' === $enabled = it_exchange_get_product_feature( $product->ID, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) {
-				$parts[$key] = 'customer-pricing';	
+				$parts[$key] = 'customer-pricing';
 			}
 		}
 	}
@@ -284,7 +284,7 @@ add_filter( 'it_exchange_get_content_product_product_info_loop_elements', 'it_ex
  * @since 1.0.0
  *
  * @param string|float $db_base_price default Base Price
- * @param array        $product iThemes Exchange Product
+ * @param array        $product ExchangeWP Product
  * @param bool         $format Whether or not the price should be formatted
  *
  * @return string|float Modified base price if customer pricing is set for the product.
@@ -321,8 +321,8 @@ add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_get_customer
  * @since 1.0.0
  *
  * @param float $default default Base Price
- * @param int $product_id iThemes Exchange Product ID
- * @param array $options Any options being passed through function 
+ * @param int $product_id ExchangeWP Product ID
+ * @param array $options Any options being passed through function
  * @return float $base_price modified, if  customer pricing has been enabled for product
 */
 function it_exchange_customer_pricing_get_product_feature_base_price( $default, $product_id, $options ) {

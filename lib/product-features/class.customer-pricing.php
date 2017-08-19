@@ -27,7 +27,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		add_filter( 'it_exchange_product_has_feature_customer-pricing', array( $this, 'product_has_feature') , 9, 2 );
 		add_filter( 'it_exchange_product_supports_feature_customer-pricing', array( $this, 'product_supports_feature') , 9, 2 );
 	}
-	
+
 	/**
 	 * Deprecated Constructor. Registers hooks
 	 *
@@ -65,9 +65,9 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	 * @return void
 	*/
 	function init_feature_metaboxes() {
-		
+
 		global $post;
-		
+
 		if ( isset( $_REQUEST['post_type'] ) ) {
 			$post_type = $_REQUEST['post_type'];
 		} else {
@@ -84,23 +84,23 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			if ( isset( $post ) && !empty( $post ) )
 				$post_type = $post->post_type;
 		}
-			
+
 		if ( !empty( $_REQUEST['it-exchange-product-type'] ) )
 			$product_type = $_REQUEST['it-exchange-product-type'];
 		else
 			$product_type = it_exchange_get_product_type( $post );
-		
+
 		if ( !empty( $post_type ) && 'it_exchange_prod' === $post_type ) {
 			if ( !empty( $product_type ) &&  it_exchange_product_type_supports_feature( $product_type, 'customer-pricing' ) )
 				add_action( 'it_exchange_product_metabox_callback_' . $product_type, array( $this, 'register_metabox' ) );
 		}
-		
+
 	}
 
 	/**
 	 * Registers the feature metabox for a specific product type
 	 *
-	 * Hooked to it_exchange_product_metabox_callback_[product-type] where product type supports the feature 
+	 * Hooked to it_exchange_product_metabox_callback_[product-type] where product type supports the feature
 	 *
 	 * @since 1.0.0
 	 * @return void
@@ -116,7 +116,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	 * @return void
 	*/
 	function print_metabox( $post ) {
-		// Grab the iThemes Exchange Product object from the WP $post object
+		// Grab the ExchangeWP Product object from the WP $post object
 		$product = it_exchange_get_product( $post );
 
 		// Set the value of the feature for this product
@@ -129,17 +129,17 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		if ( 0 == $nyop_max ) {
 			$nyop_max = __( 'No Limit', 'LION' );
 		} else {
-			$nyop_max = it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) );	
+			$nyop_max = it_exchange_format_price( it_exchange_convert_from_database_number( $nyop_max ) );
 		}
-		
+
 		?>
-        
+
 		<p class="it-exchange-customer-pricing-checkbox">
 		<input type="checkbox" id="it-exchange-customer-pricing-enable"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable" value="yes" <?php checked( 'yes', $enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable"><?php _e( 'Enable customer price options for this product', 'LION' ); ?> <span class="tip" title="<?php _e( 'This option allows you to accept different payment amounts for the product as selected by the customer.', 'LION' ); ?>">i</span></label>
 		</p>
-        
+
         <div class="it-exchange-customer-pricing-enable<?php echo ( 'no' == $enabled ) ? ' hide-if-js' : '' ?>">
-        
+
         <label for="it-exchange-customer-pricing-options"><?php _e( 'Pricing Options', 'LION' ); ?> <span class="tip" title="<?php _e( 'Create the price options available to your customer for this product.', 'LION' ); ?>">i</span></label>
         <div class="it-exchange-customer-pricing-list-wrapper">
 			<?php
@@ -177,7 +177,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			if ( !empty( $hidden_class ) ) {
 				?>
                 <div class="it-exchange-customer-pricing-no-prices"><?php _e( 'No price options have been added to this product yet.', 'LION' ); ?></div>
-                <?php	
+                <?php
 			}
 			?>
         </div>
@@ -186,11 +186,11 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	            <a href class="button"><?php _e( 'Add New Price', 'LION' ); ?></a>
 	        </div>
 		</div>
-        
+
 		<p class="it-exchange-customer-pricing-nyop-checkbox">
 		<input type="checkbox" id="it-exchange-customer-pricing-enable-nyop"  class="it-exchange-checkbox-enable" name="it-exchange-customer-pricing-enable-nyop" value="yes" <?php checked( 'yes', $nyop_enabled ); ?> />&nbsp;<label for="it-exchange-customer-pricing-enable-nyop"><?php _e( 'Let customers name their own price?', 'LION' ); ?> <span class="tip" title="<?php _e( 'This allows your customers to set their own price.', 'LION' ); ?>">i</span></label>
 		</p>
-        
+
         <div class="it-exchange-customer-pricing-enable-nyop columns-wrapper<?php echo ( 'no' == $nyop_enabled ) ? ' hide-if-js' : '' ?>">
             <div class="it-exchange-customer-pricing-nyop-min column">
                 <label for="it-exchange-customer-pricing-nyop-min"><?php _e( 'Minimum price', 'LION' ); ?></label>
@@ -201,7 +201,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
                 <input type="text" id="it-exchange-customer-pricing-nyop-max" class="it-exchange-customer-pricing-nyop-min-max" name="it-exchange-customer-pricing-nyop-max" value="<?php esc_attr_e( $nyop_max ); ?>" />
 			</div>
         </div>
-        
+
         </div>
 		<?php
 	}
@@ -224,17 +224,17 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		if ( ! $product_id )
 			return;
 
-		// Abort if this product type doesn't support this feature 
+		// Abort if this product type doesn't support this feature
 		if ( ! it_exchange_product_type_supports_feature( $product_type, 'customer-pricing' ) )
 			return;
-		
+
 		// Set enabled
 		$enabled = empty( $_POST['it-exchange-customer-pricing-enable'] ) ? 'no' : 'yes';
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $enabled, array( 'setting' => 'enabled' ) );
-		
+
 		if ( ! empty( $_POST['it-exchange-customer-pricing-options'] ) ) {
 			$price_options = array();
-			
+
 			foreach( $_POST['it-exchange-customer-pricing-options'] as $key => $option ) {
 				if ( '' != trim( $option['price'] ) ) {
 					$price_options[] = array(
@@ -244,36 +244,36 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 					);
 				}
 			}
-			
+
 			it_exchange_update_product_feature( $product_id, 'customer-pricing', $price_options, array( 'setting' => 'pricing-options' ) );
 			$pricing_options = true;
 		} else {
 			it_exchange_update_product_feature( $product_id, 'customer-pricing', array(), array( 'setting' => 'pricing-options' ) );
 			$pricing_options = false;
 		}
-		
+
 		//nyop = Name Your Own Price
 		$nyop_enabled = empty( $_POST['it-exchange-customer-pricing-enable-nyop'] ) ? 'no' : 'yes';
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_enabled, array( 'setting' => 'nyop_enabled' ) );
-		
+
 		$nyop_min =  empty( $_POST['it-exchange-customer-pricing-nyop-min'] ) ? 0 : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-min'] );
-		
+
 		$nyop_max =  empty( $_POST['it-exchange-customer-pricing-nyop-max'] ) ? 0 : it_exchange_convert_to_database_number( $_POST['it-exchange-customer-pricing-nyop-max'] );
-		
+
 		if ( 0 != $nyop_max && $nyop_min > $nyop_max) {
 			$nyop_temp = $nyop_min;
 			$nyop_min = $nyop_max;
-			$nyop_max = $nyop_temp;	
+			$nyop_max = $nyop_temp;
 		}
-		
+
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_min, array( 'setting' => 'nyop_min' ) );
 		it_exchange_update_product_feature( $product_id, 'customer-pricing', $nyop_max, array( 'setting' => 'nyop_max' ) );
-		
+
 		// If there weren't any pricing options set and name your own price isn't set, disable
 		// customer pricing for this product
 		if ( !$pricing_options && 'no' === $nyop_enabled )
 			it_exchange_update_product_feature( $product_id, 'customer-pricing', 'no', array( 'setting' => 'enabled' ) );
-				
+
 	}
 
 	/**
@@ -287,9 +287,9 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	function save_feature( $product_id, $new_value, $options=array() ) {
 		$defaults['setting'] = 'enabled';
 		$options = ITUtility::merge_defaults( $options, $defaults );
-		
+
 		switch ( $options['setting'] ) {
-			
+
 			case 'enabled':
 				update_post_meta( $product_id, '_it-exchange-customer-pricing-enabled', $new_value );
 				break;
@@ -305,7 +305,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			case 'nyop_max':
 				update_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-max', $new_value );
 				break;
-			
+
 		}
 		return true;
 	}
@@ -322,9 +322,9 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	function get_feature( $existing, $product_id, $options=array() ) {
 		$defaults['setting'] = 'enabled';
 		$options = ITUtility::merge_defaults( $options, $defaults );
-		
+
 		switch ( $options['setting'] ) {
-			
+
 			case 'enabled':
 				$enabled = get_post_meta( $product_id, '_it-exchange-customer-pricing-enabled', true );
 				return empty( $enabled ) ? 'no' : $enabled;
@@ -342,9 +342,9 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 			case 'nyop_max':
 				return get_post_meta( $product_id, '_it-exchange-customer-pricing-nyop-max', true );
 				break;
-			
+
 		}
-		
+
 		return false;
 	}
 
@@ -371,7 +371,7 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 	/**
 	 * Does the product support this feature?
 	 *
-	 * This is different than if it has the feature, a product can 
+	 * This is different than if it has the feature, a product can
 	 * support a feature but might not have the feature set.
 	 *
 	 * @since 1.0.0
@@ -384,9 +384,9 @@ class IT_Exchange_Addon_Customer_Pricing_Product_Feature_Customer_Pricing {
 		$product_type = it_exchange_get_product_type( $product_id );
 		if ( ! it_exchange_product_type_supports_feature( $product_type, 'customer-pricing' ) )
 			return false;
-			
+
 		// Determine if this product has turned on product availability
-		if ( 'no' == it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'enabled' ) ) ) 
+		if ( 'no' == it_exchange_get_product_feature( $product_id, 'customer-pricing', array( 'setting' => 'enabled' ) ) )
 			return false;
 
 		return true;
